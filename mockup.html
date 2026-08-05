@@ -7,7 +7,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Work+Sans:wght@300;400;500;600&family=Mrs+Saint+Delafield&display=swap" rel="stylesheet">
 
 <style>
   :root{
@@ -90,26 +90,29 @@
     text-align:center;
     padding:4rem 1.5rem;
   }
-  .hero-eyebrow{
-    font-size:0.78rem;
-    letter-spacing:0.14em;
-    text-transform:uppercase;
-    color:var(--gray);
-    margin:0 0 1.25rem;
+  .hero-signature{
+    font-family:'Mrs Saint Delafield', cursive;
+    font-size:clamp(3.2rem, 9vw, 6rem);
+    line-height:1;
+    color:var(--ink);
+    margin:0 0 1.5rem;
   }
   .hero-name{
-    font-family:var(--display);
+    font-family:var(--body);
     font-weight:500;
-    font-size:clamp(2.6rem, 8vw, 5.5rem);
-    line-height:1.02;
-    margin:0 0 1.25rem;
-    letter-spacing:-0.01em;
+    font-size:clamp(0.95rem, 1.8vw, 1.3rem);
+    letter-spacing:0.28em;
+    text-transform:uppercase;
+    color:var(--ink);
+    margin:0 0 0.7rem;
   }
-  .hero-tagline{
-    font-size:clamp(1rem, 1.6vw, 1.2rem);
+  .hero-role{
+    font-family:var(--body);
+    font-weight:400;
+    font-size:clamp(0.68rem, 1.1vw, 0.8rem);
+    letter-spacing:0.24em;
+    text-transform:uppercase;
     color:var(--gray);
-    max-width:520px;
-    line-height:1.55;
     margin:0;
   }
 
@@ -395,9 +398,9 @@
 </nav>
 
 <header class="hero view active" id="home">
-  <p class="hero-eyebrow">Marketing &amp; Social Media · Caracas → Boston → Milan → Miami</p>
-  <h1 class="hero-name">Alessia<br>Di Giulio</h1>
-  <p class="hero-tagline">Social Media Coordinator at Prime Group, bilingual content creator, and a lifelong collector of good photos and small creative experiments.</p>
+  <p class="hero-signature">Alessia Di Giulio</p>
+  <h1 class="hero-name">Alessia Di Giulio</h1>
+  <p class="hero-role">Marketing &amp; Creative</p>
 </header>
 
 <section id="work" class="view">
