@@ -38,7 +38,76 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ---------- CHAPTER CONTENT HELPERS ----------
+  // ---------- SPREAD PHOTO HELPER (illustrated two-page chapters) ----------
+  function spreadPhotoHtml(photo) {
+    const decoIcons = {
+      paperclip: `<span class="photo-deco photo-deco--paperclip"><svg viewBox="0 0 24 40" width="16" height="28"><path d="M6 6 L6 30 A6 6 0 0 0 18 30 L18 10 A3 3 0 0 0 12 10 L12 26" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span>`,
+      pin: `<span class="photo-deco photo-deco--pin"></span>`,
+      tape: `<span class="photo-deco photo-deco--tape"></span>`,
+      "stamp-edge": ""
+    };
+    const tilt = photo.tilt || 0;
+    const ratio = photo.ratio || "1/1";
+    const frameClass = photo.deco ? ` photo-frame--${photo.deco}` : "";
+    return `
+      <div class="photo-frame${frameClass}" style="--tilt:${tilt}deg; aspect-ratio:${ratio.replace("/", "/")};">
+        ${decoIcons[photo.deco] || ""}
+        <img src="images/${photo.file}" alt="" loading="lazy"
+             onerror="this.parentElement.classList.add('photo-frame--empty'); this.remove();">
+        ${photo.annotation ? `
+          <div class="photo-annotation" style="left:${photo.annotation.left}; top:${photo.annotation.top};">
+            <span class="annotation-text">${photo.annotation.text}</span>
+            <span class="annotation-arrow">${photo.annotation.arrow || "↓"}</span>
+          </div>
+        ` : ""}
+      </div>
+    `;
+  }
+
+  function spreadHtml(ch, i) {
+    return `
+      <div class="spread">
+        <div class="spread-page spread-page--left">
+          <img class="spread-bg" src="${ch.bgLeft}" alt="" loading="lazy">
+          <div class="page-content">
+            <p class="spread-label">${ch.label}</p>
+            <h2 class="spread-title">${ch.title}</h2>
+            <div class="spread-intro">${ch.leftIntro || ""}</div>
+            ${ch.leftPhotos && ch.leftPhotos.length ? `<div class="spread-photos">${ch.leftPhotos.map(spreadPhotoHtml).join("")}</div>` : ""}
+            ${ch.leftSubNote ? `
+              <div class="spread-subnote">
+                <p class="subnote-label">${ch.leftSubNote.label}</p>
+                <p class="subnote-text">${ch.leftSubNote.text}</p>
+              </div>
+            ` : ""}
+            <span class="page-number">${ch.pageNumber}</span>
+          </div>
+        </div>
+        <div class="spread-seam" aria-hidden="true"></div>
+        <div class="spread-page spread-page--right">
+          <img class="spread-bg" src="${ch.bgRight}" alt="" loading="lazy">
+          <div class="page-content">
+            ${ch.stamp ? `
+              <div class="spread-stamp">
+                <svg viewBox="0 0 80 80" class="stamp-ring"><circle cx="40" cy="40" r="35" fill="none" stroke="currentColor" stroke-width="1.25" stroke-dasharray="2 3"/></svg>
+                <span class="stamp-text">${ch.stamp}</span>
+              </div>
+            ` : ""}
+            ${ch.rightCaption ? `<p class="spread-caption">${ch.rightCaption}</p>` : ""}
+            ${ch.rightIntro ? `<div class="spread-intro spread-intro--right">${ch.rightIntro}</div>` : ""}
+            ${ch.rightPhotos && ch.rightPhotos.length ? `<div class="spread-photos">${ch.rightPhotos.map(spreadPhotoHtml).join("")}</div>` : ""}
+            ${ch.tornNote ? `<span class="torn-note">${ch.tornNote}</span>` : ""}
+            <button class="ticket-cta continue-btn" data-index="${i}">
+              <span class="ticket-label">Continue the Journey</span>
+              <span class="ticket-next">${ch.ctaNext || "Next Chapter"} <span class="arrow">→</span></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // ---------- CHAPTER CONTENT HELPERS (legacy polaroid template) ----------
   function photoFilename(name, annotation) {
     return `
       <div class="polaroid">
@@ -108,6 +177,9 @@ document.addEventListener("DOMContentLoaded", () => {
           <button class="restart-link" id="restart-journey" type="button">↺ Revisit the Journey</button>
         </div>
       `;
+    } else if (ch.template === "spread") {
+      section.classList.add("chapter--spread");
+      section.innerHTML = spreadHtml(ch, i);
     } else {
       section.innerHTML = `
         <div class="chapter-inner">

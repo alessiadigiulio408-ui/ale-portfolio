@@ -38,3 +38,12 @@ Square-ish photos (close to 1:1) look best, since they display like Polaroids.
 ---
 Want to add or remove photos per chapter? Open `data.js` in the root folder and edit the
 `photos: [...]` array for that chapter — just list the filenames you want, in order.
+
+## New illustrated chapter spreads (Caracas roots, Boston, Milan)
+The Caracas roots, Boston, and Milan chapters now use hand-illustrated backgrounds automatically —
+no action needed there. Their photo slots (Polaroids layered on top) use these filenames:
+
+- caracas-roots-1.jpg, caracas-roots-2.jpg (already added ✓)
+- caracas-roots-3.jpg, caracas-roots-4.jpg (optional — add more photos here anytime)
+- waltham-volunteer-1.jpg, waltham-bentley-1.jpg, waltham-bentley-2.jpg
+- milan-bocconi-1.jpg, milan-bocconi-2.jpg

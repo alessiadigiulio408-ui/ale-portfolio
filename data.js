@@ -19,21 +19,28 @@ const journeyChapters = [
     title: "Where It All Began",
     lat: 10.4806,
     lng: -66.9036,
-    entries: [
-      {
-        dateLabel: "Roots",
-        role: "Childhood & Early Education",
-        org: "",
-        text: `<p class="entry-question">Who was I?</p>
+    template: "spread",
+    label: "CHAPTER ONE · CARACAS, VENEZUELA",
+    bgLeft: "images/chapters/venezuela-left-page.webp",
+    bgRight: "images/chapters/venezuela-right-page.webp",
+    leftIntro: `<p class="entry-question">Who was I?</p>
 <p>I grew up in Caracas, Venezuela, where I developed a curiosity for both creativity and analytical thinking. In school, I found myself equally drawn to mathematics and art, never realizing those two interests would eventually lead me toward the same path.</p>
 <p>Beyond the classroom, I dreamed of exploring the world. I knew I'd eventually leave Venezuela to see what else was out there — and that pull is what pushed me to do everything in my power to make it to Boston. As graduation approached, I left home with one question:</p>
 <p class="entry-question">What was I meant to create?</p>`,
-        photos: ["caracas-roots-1.jpg", "caracas-roots-2.jpg"],
-        photoAnnotations: {
-          "caracas-roots-1.jpg": { text: "Alessia", left: "37%", top: "38%", arrow: "↓" }
-        }
-      }
-    ]
+    leftPhotos: [
+      { file: "caracas-roots-1.jpg", ratio: "4/5", tilt: -3, deco: "pin",
+        annotation: { text: "Alessia", left: "37%", top: "38%", arrow: "↓" } },
+      { file: "caracas-roots-2.jpg", ratio: "4/3", tilt: 2, deco: "tape" }
+    ],
+    rightCaption: "El Ávila, siempre presente.",
+    rightPhotos: [
+      { file: "caracas-roots-3.jpg", ratio: "1/1", tilt: -2, deco: "paperclip" },
+      { file: "caracas-roots-4.jpg", ratio: "3/4", tilt: 3, deco: "stamp-edge" }
+    ],
+    stamp: "CARACAS · VENEZUELA",
+    tornNote: "Vistas que formaron mis primeros sueños.",
+    pageNumber: "01",
+    ctaNext: "Boston"
   },
   {
     id: "boston-bentley",
@@ -43,25 +50,32 @@ const journeyChapters = [
     emoji: "🎓",
     kicker: "Chapter Two",
     destination: "Boston, Massachusetts",
-    title: "Building the Foundation",
+    title: "Where Ambition Took Shape",
     lat: 42.3765,
     lng: -71.2356,
-    entries: [
-      {
-        dateLabel: "Aug 2021 – May 2025",
-        role: "B.S. Marketing, Minor in Economics",
-        org: "Bentley University · Honors Program",
-        text: "This is where I discovered marketing academically — the strategy, the psychology, the numbers behind it. GPA 3.55. President's List (Fall 2024, Spring 2025); Dean's List (Spring 2022, Fall 2022, Spring 2023). Completed the Women's Leadership Program.",
-        photos: ["waltham-bentley-1.jpg", "waltham-bentley-2.jpg"]
-      },
-      {
-        dateLabel: "Jan – Apr 2023",
-        role: "General Body Member",
-        org: "Whittemore ESE — Volunteer",
-        text: "Taught English to a diverse group of Hispanic speakers, provided compassionate support, and collaborated on initiatives creating professional, academic, and social opportunities for the community.",
-        photos: ["waltham-volunteer-1.jpg"]
-      }
-    ]
+    template: "spread",
+    label: "CHAPTER TWO · BOSTON, MASSACHUSETTS",
+    bgLeft: "images/chapters/boston-left-page.webp",
+    bgRight: "images/chapters/boston-right-page.webp",
+    leftIntro: `<p>Moving to Boston meant navigating a new city, a new independence, and a new sense of who I was becoming outside the classroom.</p>`,
+    leftPhotos: [
+      { file: "waltham-volunteer-1.jpg", ratio: "1/1", tilt: -2, deco: "pin" }
+    ],
+    leftSubNote: {
+      label: "Jan – Apr 2023 · Whittemore ESE, Volunteer",
+      text: "Taught English to a diverse group of Hispanic speakers, provided compassionate support, and collaborated on initiatives creating professional, academic, and social opportunities for the community."
+    },
+    rightCaption: "Boston taught me to dream bigger.",
+    rightPhotos: [
+      { file: "waltham-bentley-1.jpg", ratio: "4/5", tilt: 2, deco: "paperclip" },
+      { file: "waltham-bentley-2.jpg", ratio: "4/3", tilt: -3, deco: "tape" }
+    ],
+    rightIntro: `<p><strong>B.S. Marketing, Minor in Economics</strong> — Bentley University, Honors Program</p>
+<p>This is where I discovered marketing academically — the strategy, the psychology, the numbers behind it. GPA 3.55. President's List (Fall 2024, Spring 2025); Dean's List (Spring 2022, Fall 2022, Spring 2023). Completed the Women's Leadership Program.</p>`,
+    stamp: "BOSTON · MASSACHUSETTS",
+    tornNote: "A city classroom, a campus home.",
+    pageNumber: "02",
+    ctaNext: "Next Chapter"
   },
   {
     id: "the-label",
@@ -95,15 +109,24 @@ const journeyChapters = [
     title: "A Global Perspective",
     lat: 45.4642,
     lng: 9.1900,
-    entries: [
-      {
-        dateLabel: "Study Abroad",
-        role: "Semester at Bocconi University",
-        org: "",
-        text: "Spent a semester abroad immersed in Italian culture and business education — a chapter that sharpened my global perspective on marketing and brand strategy.",
-        photos: ["milan-bocconi-1.jpg", "milan-bocconi-2.jpg"]
-      }
-    ]
+    template: "spread",
+    label: "CHAPTER FOUR · MILAN, ITALY",
+    bgLeft: "images/chapters/milan-left-page.webp",
+    bgRight: "images/chapters/milan-right-page.webp",
+    leftIntro: `<p>Milan — where cafés, trams, and centuries of design shaped how I see culture and craft.</p>`,
+    leftPhotos: [
+      { file: "milan-bocconi-1.jpg", ratio: "4/5", tilt: -2, deco: "tape" }
+    ],
+    rightCaption: "Milan taught me to see farther.",
+    rightPhotos: [
+      { file: "milan-bocconi-2.jpg", ratio: "4/3", tilt: 3, deco: "paperclip" }
+    ],
+    rightIntro: `<p><strong>Semester at Bocconi University</strong> — Study Abroad</p>
+<p>A semester abroad that expanded my perspective on culture, fashion, and brand — sharpening how I think about marketing and strategy on a global scale.</p>`,
+    stamp: "MILANO · ITALIA",
+    tornNote: "Where heritage meets innovation.",
+    pageNumber: "04",
+    ctaNext: "Next Chapter"
   },
   {
     id: "prime-group",
