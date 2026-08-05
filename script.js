@@ -1,102 +1,171 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const map = L.map("journey-map", {
-    scrollWheelZoom: false,
-    zoomControl: true
-  }).setView([30, -30], 2);
+  const root = document.getElementById("chapters-root");
+  const nav = document.getElementById("progress-nav");
+  const tagline = document.getElementById("cover-tagline");
+  tagline.textContent = coverTagline;
 
-  L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-    maxZoom: 18
-  }).addTo(map);
+  let unlockedUpTo = -1; // -1 = only cover visible
 
-  // Draw the route arc connecting cities in story order
-  const routeLatLngs = journeyStops.map(s => [s.lat, s.lng]);
-  L.polyline(routeLatLngs, {
-    color: "#A9843F",
-    weight: 2,
-    dashArray: "2 8",
-    opacity: 0.8
-  }).addTo(map);
-
-  const bounds = [];
-
-  journeyStops.forEach((stop) => {
-    bounds.push([stop.lat, stop.lng]);
-
-    const icon = L.divIcon({
-      className: "",
-      html: `<div class="stamp-marker">${stop.city.slice(0, 1)}</div>`,
-      iconSize: [38, 38],
-      iconAnchor: [19, 19]
+  // ---------- BUILD PROGRESS NAV ----------
+  journeyChapters.forEach((ch, i) => {
+    const stamp = document.createElement("button");
+    stamp.className = "nav-stamp";
+    stamp.type = "button";
+    stamp.textContent = ch.number;
+    stamp.title = ch.destination || ch.title;
+    stamp.dataset.index = i;
+    stamp.disabled = true;
+    stamp.addEventListener("click", () => {
+      if (i <= unlockedUpTo) scrollToChapter(i);
     });
-
-    const marker = L.marker([stop.lat, stop.lng], { icon }).addTo(map);
-
-    const popupHtml = `
-      <div class="popup-city">${stop.city}</div>
-      <div class="popup-country">${stop.country}</div>
-      <button class="popup-btn" data-stop="${stop.id}">Open page</button>
-    `;
-    marker.bindPopup(popupHtml);
-
-    marker.on("popupopen", () => {
-      const btn = document.querySelector(`.popup-btn[data-stop="${stop.id}"]`);
-      if (btn) btn.addEventListener("click", () => openPassportPage(stop));
-    });
+    nav.appendChild(stamp);
   });
 
-  if (bounds.length) {
-    map.fitBounds(bounds, { padding: [40, 40] });
+  function updateNav(current) {
+    document.querySelectorAll(".nav-stamp").forEach((el) => {
+      const i = Number(el.dataset.index);
+      el.classList.remove("is-current", "is-done");
+      el.disabled = i > unlockedUpTo;
+      if (i === current) el.classList.add("is-current");
+      else if (i <= unlockedUpTo) el.classList.add("is-done");
+    });
   }
 
-  // ===== MODAL =====
-  const overlay = document.getElementById("modal-overlay");
-  const pageInner = document.getElementById("passport-page-inner");
-  const closeBtn = document.getElementById("modal-close");
-
-  function openPassportPage(stop) {
-    const chaptersHtml = stop.chapters.map(ch => `
-      <div class="chapter">
-        <span class="chapter-date">${ch.dateLabel}</span>
-        <h3 class="chapter-title">${ch.title}</h3>
-        ${ch.org ? `<p class="chapter-org">${ch.org}</p>` : ""}
-        <p class="chapter-text">${ch.text}</p>
-        <div class="photo-grid">
-          ${ch.photos.map(photoFilename).join("")}
-        </div>
-      </div>
-    `).join("");
-
-    pageInner.innerHTML = `
-      <h2 class="modal-city-title" id="modal-city-title">${stop.city}</h2>
-      <p class="modal-country">${stop.country}</p>
-      ${chaptersHtml}
-    `;
-
-    overlay.classList.add("open");
-    document.body.style.overflow = "hidden";
-  }
-
+  // ---------- BUILD CHAPTER PHOTO GRID ----------
   function photoFilename(name) {
-    const src = `images/${name}`;
     return `
       <div class="polaroid">
-        <img src="${src}" alt="" loading="lazy"
+        <img src="images/${name}" alt="" loading="lazy"
              onerror="this.parentElement.innerHTML='<div class=&quot;polaroid-placeholder&quot;>+ photo</div>'">
       </div>
     `;
   }
 
-  function closeModal() {
-    overlay.classList.remove("open");
-    document.body.style.overflow = "";
+  function entryHtml(entry) {
+    return `
+      <div class="entry">
+        <span class="entry-date">${entry.dateLabel}</span>
+        <h3 class="entry-role">${entry.role}</h3>
+        ${entry.org ? `<p class="entry-org">${entry.org}</p>` : ""}
+        <p class="entry-text">${entry.text}</p>
+        <div class="photo-grid">${entry.photos.map(photoFilename).join("")}</div>
+      </div>
+    `;
   }
 
-  closeBtn.addEventListener("click", closeModal);
-  overlay.addEventListener("click", (e) => {
-    if (e.target === overlay) closeModal();
+  function asideHtml(aside) {
+    if (!aside) return "";
+    return `
+      <div class="postcard">
+        <div class="postcard-stamp">✉</div>
+        <div class="postcard-body">
+          <p class="postcard-kicker">${aside.label}</p>
+          <h4>${aside.title}</h4>
+          <p class="postcard-org">${aside.org}</p>
+          <p class="postcard-text">${aside.text}</p>
+        </div>
+      </div>
+    `;
+  }
+
+  // ---------- RENDER CHAPTERS ----------
+  journeyChapters.forEach((ch, i) => {
+    const section = document.createElement("section");
+    section.className = "chapter";
+    section.id = `chapter-${ch.id}`;
+    section.hidden = true;
+
+    if (ch.isFinal) {
+      section.innerHTML = `
+        <div class="chapter-inner chapter-inner--final">
+          <p class="chapter-kicker">${ch.kicker}</p>
+          <h2 class="chapter-title chapter-title--final">${ch.title}</h2>
+          <p class="closing-text">${ch.closingText}</p>
+          <div class="final-ctas">
+            <a class="final-cta final-cta--primary" href="mailto:${ch.email}">Get in Touch</a>
+            <a class="final-cta" href="${ch.linkedin}" target="_blank" rel="noopener">View LinkedIn</a>
+          </div>
+          <button class="restart-link" id="restart-journey" type="button">↺ Revisit the Journey</button>
+        </div>
+      `;
+    } else {
+      section.innerHTML = `
+        <div class="chapter-inner">
+          <p class="chapter-kicker">${ch.kicker}</p>
+          <div class="locator-map" id="locator-${ch.id}"></div>
+          <p class="chapter-destination">${ch.destination}</p>
+          <h2 class="chapter-title">${ch.title}</h2>
+          ${ch.entries.map(entryHtml).join("")}
+          ${asideHtml(ch.aside)}
+          <button class="continue-btn" data-index="${i}">Continue the Journey <span class="arrow">→</span></button>
+        </div>
+      `;
+    }
+
+    root.appendChild(section);
   });
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeModal();
+
+  // ---------- LOCATOR MAPS (decorative, non-interactive) ----------
+  journeyChapters.forEach((ch) => {
+    if (ch.isFinal) return;
+    const el = document.getElementById(`locator-${ch.id}`);
+    if (!el) return;
+    const map = L.map(el, {
+      center: [ch.lat, ch.lng],
+      zoom: 10,
+      zoomControl: false,
+      dragging: false,
+      scrollWheelZoom: false,
+      doubleClickZoom: false,
+      boxZoom: false,
+      keyboard: false,
+      touchZoom: false,
+      attributionControl: false
+    });
+    L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
+      maxZoom: 14
+    }).addTo(map);
+    const icon = L.divIcon({
+      className: "",
+      html: `<div class="stamp-marker stamp-marker--small">${ch.destination.slice(0, 1)}</div>`,
+      iconSize: [30, 30],
+      iconAnchor: [15, 15]
+    });
+    L.marker([ch.lat, ch.lng], { icon }).addTo(map);
+  });
+
+  // ---------- NAVIGATION LOGIC ----------
+  function scrollToChapter(i) {
+    const ch = journeyChapters[i];
+    const el = document.getElementById(`chapter-${ch.id}`);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+      updateNav(i);
+    }
+  }
+
+  function unlockChapter(i) {
+    if (i >= journeyChapters.length) return;
+    const ch = journeyChapters[i];
+    const el = document.getElementById(`chapter-${ch.id}`);
+    if (el) el.hidden = false;
+    if (i > unlockedUpTo) unlockedUpTo = i;
+    scrollToChapter(i);
+  }
+
+  document.getElementById("begin-journey").addEventListener("click", () => {
+    unlockChapter(0);
+  });
+
+  root.addEventListener("click", (e) => {
+    const btn = e.target.closest(".continue-btn");
+    if (btn) {
+      const i = Number(btn.dataset.index);
+      unlockChapter(i + 1);
+      return;
+    }
+    if (e.target.closest("#restart-journey")) {
+      document.getElementById("cover").scrollIntoView({ behavior: "smooth" });
+    }
   });
 });

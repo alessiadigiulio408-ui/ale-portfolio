@@ -17,7 +17,7 @@
 }
 
 @media (prefers-reduced-motion: reduce){
-  *{ animation-duration:0.01ms !important; transition-duration:0.01ms !important; }
+  *{ animation-duration:0.01ms !important; transition-duration:0.01ms !important; scroll-behavior:auto !important; }
 }
 
 *{ box-sizing:border-box; }
@@ -30,6 +30,63 @@ body{
   -webkit-font-smoothing:antialiased;
 }
 a{ color:inherit; }
+button{ font-family:inherit; }
+
+/* ===== PROGRESS NAV (fixed) ===== */
+.progress-nav{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  z-index:100;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:0;
+  padding:0.85rem 1rem;
+  background:rgba(241,234,217,0.9);
+  backdrop-filter:blur(6px);
+  border-bottom:1px solid rgba(27,42,65,0.12);
+}
+.nav-stamp{
+  width:30px;
+  height:30px;
+  border-radius:50%;
+  border:1.5px solid rgba(27,42,65,0.25);
+  background:var(--white);
+  color:var(--ink-soft);
+  font-family:var(--mono);
+  font-size:0.78rem;
+  font-weight:700;
+  cursor:not-allowed;
+  position:relative;
+  margin:0 12px;
+  transition:all 0.25s ease;
+}
+.nav-stamp::after{
+  content:"";
+  position:absolute;
+  top:50%;
+  left:100%;
+  width:24px;
+  height:1px;
+  background:rgba(27,42,65,0.2);
+  transform:translateY(-50%);
+}
+.nav-stamp:last-child::after{ display:none; }
+.nav-stamp.is-done{
+  border-color:var(--brass);
+  color:var(--brass);
+  cursor:pointer;
+}
+.nav-stamp.is-current{
+  border-color:var(--stamp);
+  background:var(--stamp);
+  color:var(--white);
+  cursor:pointer;
+  transform:scale(1.12);
+}
+.nav-stamp:disabled{ opacity:0.45; }
 
 /* ===== COVER ===== */
 .cover{
@@ -44,6 +101,7 @@ a{ color:inherit; }
   align-items:center;
   justify-content:center;
   overflow:hidden;
+  padding-top:3rem;
 }
 .cover-border{
   position:absolute;
@@ -60,7 +118,7 @@ a{ color:inherit; }
 .cover-frame{
   text-align:center;
   padding:2rem;
-  max-width:640px;
+  max-width:600px;
 }
 .cover-eyebrow{
   font-family:var(--mono);
@@ -78,17 +136,18 @@ a{ color:inherit; }
   margin:0 0 1.5rem;
   letter-spacing:-0.01em;
 }
-.cover-route{
-  font-family:var(--mono);
-  font-size:0.95rem;
-  letter-spacing:0.04em;
-  color:rgba(241,234,217,0.75);
+.cover-tagline{
+  font-family:var(--body);
+  font-size:1rem;
+  line-height:1.6;
+  color:rgba(241,234,217,0.8);
   margin:0 0 2.5rem;
 }
 .cover-cta{
   display:inline-flex;
   align-items:center;
   gap:0.5rem;
+  border:none;
   text-decoration:none;
   font-family:var(--body);
   font-weight:600;
@@ -97,191 +156,72 @@ a{ color:inherit; }
   background:var(--brass-light);
   padding:0.85rem 1.6rem;
   border-radius:999px;
+  cursor:pointer;
   transition:transform 0.25s ease, background 0.25s ease;
 }
 .cover-cta:hover{ background:var(--paper); transform:translateY(-2px); }
 .cover-cta .arrow{ transition:transform 0.25s ease; }
-.cover-cta:hover .arrow{ transform:translateY(3px); }
+.cover-cta:hover .arrow{ transform:translateX(3px); }
 
-/* ===== INTRO STRIP ===== */
-.intro{
-  background:var(--paper-dark);
-  border-bottom:1px solid rgba(27,42,65,0.12);
-  padding:1.25rem 1.5rem;
-  text-align:center;
-}
-.intro p{
-  margin:0;
-  max-width:640px;
-  margin-inline:auto;
-  font-size:0.95rem;
-  color:var(--ink-soft);
-}
-.intro-mark{ color:var(--stamp); margin-right:0.35rem; }
-
-/* ===== MAP ===== */
-.map-section{ padding:2.5rem 1.25rem; }
-#journey-map{
-  max-width:1100px;
-  margin:0 auto;
-  height:min(62vh, 560px);
-  min-height:380px;
-  border-radius:6px;
-  border:1px solid rgba(27,42,65,0.18);
-  box-shadow:0 18px 40px -22px rgba(27,42,65,0.45);
-}
-
-/* Leaflet marker override — ink stamp look */
-.stamp-marker{
-  width:38px;
-  height:38px;
-  border-radius:50%;
-  background:var(--white);
-  border:2px solid var(--stamp);
-  box-shadow:0 0 0 3px rgba(156,59,44,0.15);
+/* ===== CHAPTERS ===== */
+.chapter{
+  min-height:100svh;
   display:flex;
   align-items:center;
   justify-content:center;
+  padding:6rem 1.25rem 4rem;
+  border-bottom:1px solid rgba(27,42,65,0.1);
+}
+.chapter:nth-of-type(even){ background:var(--paper-dark); }
+
+.chapter-inner{ max-width:640px; width:100%; }
+
+.chapter-kicker{
+  font-family:var(--mono);
+  font-size:0.75rem;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:var(--stamp);
+  margin:0 0 1.25rem;
+  text-align:center;
+}
+
+.locator-map{
+  width:180px;
+  height:180px;
+  margin:0 auto 1.5rem;
+  border-radius:50%;
+  overflow:hidden;
+  border:3px solid var(--white);
+  box-shadow:0 0 0 1px var(--brass), 0 14px 30px -14px rgba(27,42,65,0.5);
+}
+
+.chapter-destination{
+  font-family:var(--mono);
+  font-size:0.85rem;
+  letter-spacing:0.05em;
+  color:var(--brass);
+  text-align:center;
+  margin:0 0 0.3rem;
+}
+.chapter-title{
   font-family:var(--display);
   font-weight:600;
-  font-size:0.85rem;
-  color:var(--stamp);
-  cursor:pointer;
-  transition:transform 0.2s ease;
-}
-.stamp-marker:hover{ transform:scale(1.12); }
-
-.leaflet-popup-content-wrapper{
-  background:var(--paper);
-  color:var(--charcoal);
-  border-radius:4px;
-  font-family:var(--body);
-}
-.leaflet-popup-content{ margin:0.8rem 1rem; }
-.popup-city{ font-family:var(--display); font-weight:600; font-size:1.05rem; margin:0 0 0.15rem; }
-.popup-country{ font-family:var(--mono); font-size:0.72rem; letter-spacing:0.06em; color:var(--brass); text-transform:uppercase; margin:0 0 0.6rem; }
-.popup-btn{
-  display:inline-block;
-  font-size:0.82rem;
-  font-weight:600;
-  color:var(--stamp);
-  border:1px solid var(--stamp);
-  border-radius:999px;
-  padding:0.3rem 0.8rem;
-  cursor:pointer;
-  background:none;
-  font-family:var(--body);
-}
-.popup-btn:hover{ background:var(--stamp); color:var(--white); }
-
-/* ===== POSTCARD (remote work) ===== */
-.postcard-section{ padding:0 1.25rem 3rem; }
-.postcard{
-  max-width:640px;
-  margin:0 auto;
-  background:var(--white);
-  border:1px solid rgba(27,42,65,0.15);
-  border-radius:4px;
-  padding:1.75rem;
-  display:flex;
-  gap:1.25rem;
-  align-items:flex-start;
-  box-shadow:0 12px 30px -20px rgba(27,42,65,0.4);
-}
-.postcard-stamp{
-  flex:0 0 auto;
-  width:46px;
-  height:46px;
-  border:2px dashed var(--brass);
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:1.3rem;
-  color:var(--brass);
-}
-.postcard-kicker{
-  font-family:var(--mono);
-  font-size:0.72rem;
-  letter-spacing:0.05em;
-  text-transform:uppercase;
-  color:var(--brass);
-  margin:0 0 0.4rem;
-}
-.postcard h3{ font-family:var(--display); font-weight:600; margin:0 0 0.2rem; font-size:1.2rem; }
-.postcard-org{ font-family:var(--mono); font-size:0.8rem; color:var(--ink-soft); margin:0 0 0.7rem; }
-.postcard-text{ font-size:0.92rem; line-height:1.55; margin:0; color:var(--charcoal); }
-
-/* ===== FOOTER ===== */
-.site-footer{
+  font-size:clamp(1.9rem, 5vw, 2.6rem);
   text-align:center;
-  padding:2.5rem 1.25rem 3rem;
-  border-top:1px solid rgba(27,42,65,0.12);
-}
-.footer-name{ font-family:var(--display); font-weight:600; font-size:1.1rem; margin:0 0 0.4rem; }
-.footer-links{ margin:0 0 0.5rem; font-size:0.9rem; }
-.footer-links a{ text-decoration:none; color:var(--stamp); }
-.footer-links a:hover{ text-decoration:underline; }
-.footer-links span{ margin:0 0.5rem; color:var(--brass); }
-.footer-tag{ font-family:var(--mono); font-size:0.75rem; color:var(--ink-soft); margin:0; }
-
-/* ===== MODAL: PASSPORT PAGE ===== */
-.modal-overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(20,25,35,0.55);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  padding:1.25rem;
-  z-index:1000;
-}
-.modal-overlay.open{ display:flex; }
-
-.passport-page{
-  position:relative;
-  background:var(--paper);
-  max-width:720px;
-  width:100%;
-  max-height:88vh;
-  overflow-y:auto;
-  border-radius:6px;
-  box-shadow:0 30px 70px -20px rgba(0,0,0,0.5);
-  animation:pageIn 0.3s ease;
-}
-@keyframes pageIn{
-  from{ opacity:0; transform:translateY(14px) scale(0.98); }
-  to{ opacity:1; transform:translateY(0) scale(1); }
-}
-.modal-close{
-  position:absolute;
-  top:0.9rem;
-  right:0.9rem;
-  width:34px;
-  height:34px;
-  border-radius:50%;
-  border:1px solid rgba(27,42,65,0.25);
-  background:var(--white);
+  margin:0 0 2.5rem;
   color:var(--ink);
-  font-size:0.95rem;
-  cursor:pointer;
-  z-index:2;
 }
-.modal-close:hover{ background:var(--stamp); color:var(--white); border-color:var(--stamp); }
 
-.passport-page-inner{ padding:2.25rem 2rem 2.5rem; }
-
-.modal-city-title{ font-family:var(--display); font-weight:600; font-size:2rem; margin:0 0 0.1rem; }
-.modal-country{ font-family:var(--mono); font-size:0.75rem; letter-spacing:0.06em; text-transform:uppercase; color:var(--brass); margin:0 0 1.75rem; }
-
-.chapter{
+/* Entry blocks */
+.entry{
   border-top:1px dashed rgba(27,42,65,0.25);
   padding-top:1.5rem;
   margin-top:1.5rem;
 }
-.chapter:first-of-type{ border-top:none; margin-top:0; padding-top:0; }
+.entry:first-of-type{ border-top:none; margin-top:0; padding-top:0; }
 
-.chapter-date{
+.entry-date{
   display:inline-block;
   font-family:var(--mono);
   font-size:0.72rem;
@@ -292,9 +232,9 @@ a{ color:inherit; }
   border-radius:3px;
   margin-bottom:0.6rem;
 }
-.chapter-title{ font-family:var(--display); font-weight:600; font-size:1.25rem; margin:0 0 0.1rem; }
-.chapter-org{ font-family:var(--body); font-weight:500; font-size:0.9rem; color:var(--ink-soft); margin:0 0 0.7rem; }
-.chapter-text{ font-size:0.94rem; line-height:1.6; margin:0 0 1rem; color:var(--charcoal); }
+.entry-role{ font-family:var(--display); font-weight:600; font-size:1.25rem; margin:0 0 0.1rem; color:var(--ink); }
+.entry-org{ font-family:var(--body); font-weight:500; font-size:0.9rem; color:var(--ink-soft); margin:0 0 0.7rem; }
+.entry-text{ font-size:0.96rem; line-height:1.65; margin:0 0 1.1rem; color:var(--charcoal); }
 
 /* Polaroid photo grid */
 .photo-grid{
@@ -317,13 +257,6 @@ a{ color:inherit; }
   object-fit:cover;
   border-radius:1px;
 }
-.polaroid .caption{
-  font-family:var(--hand);
-  font-size:1rem;
-  text-align:center;
-  color:var(--ink-soft);
-  margin-top:0.4rem;
-}
 .polaroid-placeholder{
   width:100%;
   aspect-ratio:1/1;
@@ -337,10 +270,106 @@ a{ color:inherit; }
   font-size:1.4rem;
 }
 
+/* Postcard aside (remote work note) */
+.postcard{
+  margin-top:2rem;
+  background:var(--white);
+  border:1px solid rgba(27,42,65,0.15);
+  border-radius:4px;
+  padding:1.5rem;
+  display:flex;
+  gap:1.1rem;
+  align-items:flex-start;
+  box-shadow:0 12px 30px -20px rgba(27,42,65,0.4);
+}
+.postcard-stamp{
+  flex:0 0 auto;
+  width:42px;
+  height:42px;
+  border:2px dashed var(--brass);
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:1.2rem;
+  color:var(--brass);
+}
+.postcard-kicker{ font-family:var(--mono); font-size:0.7rem; letter-spacing:0.05em; text-transform:uppercase; color:var(--brass); margin:0 0 0.4rem; }
+.postcard-body h4{ font-family:var(--display); font-weight:600; margin:0 0 0.2rem; font-size:1.05rem; color:var(--ink); }
+.postcard-org{ font-family:var(--mono); font-size:0.78rem; color:var(--ink-soft); margin:0 0 0.6rem; }
+.postcard-text{ font-size:0.88rem; line-height:1.55; margin:0; color:var(--charcoal); }
+
+/* Continue button */
+.continue-btn{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:0.5rem;
+  width:100%;
+  margin-top:2.75rem;
+  border:1.5px solid var(--stamp);
+  background:none;
+  color:var(--stamp);
+  font-family:var(--body);
+  font-weight:600;
+  font-size:1rem;
+  padding:1rem 1.6rem;
+  border-radius:999px;
+  cursor:pointer;
+  transition:all 0.25s ease;
+}
+.continue-btn:hover{ background:var(--stamp); color:var(--white); }
+.continue-btn .arrow{ transition:transform 0.25s ease; }
+.continue-btn:hover .arrow{ transform:translateX(4px); }
+
+/* ===== FINAL CHAPTER ===== */
+.chapter-inner--final{ text-align:center; }
+.chapter-title--final{ margin-bottom:1.25rem; }
+.closing-text{
+  font-family:var(--display);
+  font-style:italic;
+  font-size:1.2rem;
+  line-height:1.6;
+  color:var(--ink-soft);
+  max-width:480px;
+  margin:0 auto 2.5rem;
+}
+.final-ctas{
+  display:flex;
+  gap:0.9rem;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-bottom:2rem;
+}
+.final-cta{
+  text-decoration:none;
+  font-weight:600;
+  font-size:0.95rem;
+  padding:0.85rem 1.6rem;
+  border-radius:999px;
+  border:1.5px solid var(--ink);
+  color:var(--ink);
+  transition:all 0.25s ease;
+}
+.final-cta:hover{ background:var(--ink); color:var(--paper); }
+.final-cta--primary{ background:var(--stamp); border-color:var(--stamp); color:var(--white); }
+.final-cta--primary:hover{ background:#7d2f22; border-color:#7d2f22; color:var(--white); }
+.restart-link{
+  background:none;
+  border:none;
+  color:var(--ink-soft);
+  font-family:var(--mono);
+  font-size:0.78rem;
+  text-decoration:underline;
+  cursor:pointer;
+}
+
 /* Mobile */
 @media (max-width:480px){
-  .passport-page-inner{ padding:1.75rem 1.25rem 2rem; }
-  .postcard{ flex-direction:column; }
+  .chapter{ padding:5.5rem 1.1rem 3rem; }
+  .nav-stamp{ margin:0 8px; width:26px; height:26px; font-size:0.72rem; }
+  .nav-stamp::after{ width:16px; }
+  .locator-map{ width:140px; height:140px; }
 }
 
 /* Focus visibility */
