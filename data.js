@@ -25,14 +25,14 @@ const journeyChapters = [
     bgRight: "images/chapters/venezuela-right-page.webp",
     leftIntro: `<p>Who was I? I grew up in Caracas, equally drawn to numbers and art — never guessing the two would meet in marketing. Beyond the classroom, I dreamed of the world beyond Venezuela, and that pull pushed me to fight for a place in Boston.</p>`,
     leftReflection: "What was I meant to create?",
-    leftPhotosClass: "photos-lower-left",
+    leftPhotosClass: "photos-center-lower",
     leftPhotos: [
       { file: "caracas-roots-1.jpg", ratio: "4/5", tilt: -2, deco: "pin", size: "primary",
         annotation: { text: "Alessia", left: "37%", top: "38%", arrow: "↓" } },
       { file: "caracas-roots-2.jpg", ratio: "4/3", tilt: 2, deco: "tape", size: "secondary" }
     ],
     rightCaption: "El Ávila, siempre presente.",
-    rightPhotosClass: "photos-upper-mid",
+    rightPhotosClass: "photos-center-mid",
     rightPhotos: [
       { file: "caracas-roots-3.jpg", ratio: "1/1", tilt: -2, deco: "paperclip", size: "primary" },
       { file: "caracas-roots-4.jpg", ratio: "3/4", tilt: 2, deco: "stamp-edge", size: "secondary" }
