@@ -23,22 +23,21 @@ const journeyChapters = [
     label: "CHAPTER ONE · CARACAS, VENEZUELA",
     bgLeft: "images/chapters/venezuela-left-page.webp",
     bgRight: "images/chapters/venezuela-right-page.webp",
-    leftIntro: `<p class="entry-question">Who was I?</p>
-<p>I grew up in Caracas, Venezuela, where I developed a curiosity for both creativity and analytical thinking. In school, I found myself equally drawn to mathematics and art, never realizing those two interests would eventually lead me toward the same path.</p>
-<p>Beyond the classroom, I dreamed of exploring the world. I knew I'd eventually leave Venezuela to see what else was out there — and that pull is what pushed me to do everything in my power to make it to Boston. As graduation approached, I left home with one question:</p>
-<p class="entry-question">What was I meant to create?</p>`,
+    leftIntro: `<p>Who was I? I grew up in Caracas, equally drawn to numbers and art — never guessing the two would meet in marketing. Beyond the classroom, I dreamed of the world beyond Venezuela, and that pull pushed me to fight for a place in Boston.</p>`,
+    leftReflection: "What was I meant to create?",
+    leftPhotosClass: "photos-lower-left",
     leftPhotos: [
-      { file: "caracas-roots-1.jpg", ratio: "4/5", tilt: -3, deco: "pin",
+      { file: "caracas-roots-1.jpg", ratio: "4/5", tilt: -2, deco: "pin", size: "primary",
         annotation: { text: "Alessia", left: "37%", top: "38%", arrow: "↓" } },
-      { file: "caracas-roots-2.jpg", ratio: "4/3", tilt: 2, deco: "tape" }
+      { file: "caracas-roots-2.jpg", ratio: "4/3", tilt: 2, deco: "tape", size: "secondary" }
     ],
     rightCaption: "El Ávila, siempre presente.",
+    rightPhotosClass: "photos-upper-mid",
     rightPhotos: [
-      { file: "caracas-roots-3.jpg", ratio: "1/1", tilt: -2, deco: "paperclip" },
-      { file: "caracas-roots-4.jpg", ratio: "3/4", tilt: 3, deco: "stamp-edge" }
+      { file: "caracas-roots-3.jpg", ratio: "1/1", tilt: -2, deco: "paperclip", size: "primary" },
+      { file: "caracas-roots-4.jpg", ratio: "3/4", tilt: 2, deco: "stamp-edge", size: "secondary" }
     ],
     stamp: "CARACAS · VENEZUELA",
-    tornNote: "Vistas que formaron mis primeros sueños.",
     pageNumber: "01",
     ctaNext: "Boston"
   },
@@ -75,7 +74,7 @@ const journeyChapters = [
     stamp: "BOSTON · MASSACHUSETTS",
     tornNote: "A city classroom, a campus home.",
     pageNumber: "02",
-    ctaNext: "Next Chapter"
+    ctaNext: "Caracas"
   },
   {
     id: "the-label",
@@ -126,7 +125,7 @@ const journeyChapters = [
     stamp: "MILANO · ITALIA",
     tornNote: "Where heritage meets innovation.",
     pageNumber: "04",
-    ctaNext: "Next Chapter"
+    ctaNext: "Aventura"
   },
   {
     id: "prime-group",

@@ -460,25 +460,33 @@ button{ font-family:inherit; }
 }
 
 .chapter--spread{
-  padding:2.5rem 1rem;
-  background:var(--paper-dark);
+  width:100vw;
+  min-height:100dvh;
+  padding:0;
+  margin:0;
+  display:flex;
   align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  background:var(--ink);
+  border-bottom:none;
 }
 
 .spread{
+  position:relative;
   display:flex;
-  width:100%;
-  max-width:1040px;
-  margin:0 auto;
-  box-shadow:0 35px 80px -25px rgba(0,0,0,0.5);
-  border-radius:6px;
+  width:min(100vw, calc(100dvh * 4 / 3));
+  aspect-ratio:4/3;
+  max-width:none;
+  margin:0;
+  box-shadow:0 40px 100px -30px rgba(0,0,0,0.65);
   overflow:hidden;
 }
 
 .spread-page{
   position:relative;
   flex:1 1 50%;
-  aspect-ratio:2/3;
+  height:100%;
   overflow:hidden;
 }
 .spread-bg{
@@ -490,9 +498,15 @@ button{ font-family:inherit; }
   display:block;
 }
 .spread-seam{
-  flex:0 0 auto;
-  width:6px;
-  background:linear-gradient(90deg, rgba(0,0,0,0.28) 0%, rgba(0,0,0,0.05) 25%, rgba(0,0,0,0.05) 75%, rgba(0,0,0,0.28) 100%);
+  position:absolute;
+  top:0;
+  bottom:0;
+  left:50%;
+  width:10px;
+  margin-left:-5px;
+  z-index:2;
+  background:linear-gradient(90deg, rgba(0,0,0,0.28) 0%, rgba(0,0,0,0.05) 30%, rgba(0,0,0,0.05) 70%, rgba(0,0,0,0.28) 100%);
+  pointer-events:none;
 }
 
 .page-content{
@@ -501,12 +515,25 @@ button{ font-family:inherit; }
   height:100%;
   display:flex;
   flex-direction:column;
-  padding:clamp(1rem, 4vw, 2rem) clamp(1rem, 4.5vw, 2.25rem);
+  padding:clamp(1rem, 3.5vw, 2.25rem);
 }
+
+/* Editorial reading panel behind text — warm paper, not a generic card */
+.text-panel{
+  background:rgba(247,239,219,0.88);
+  backdrop-filter:blur(2px);
+  -webkit-backdrop-filter:blur(2px);
+  padding:clamp(18px, 2vw, 34px);
+  border:1px solid rgba(111,72,42,0.18);
+  box-shadow:0 8px 24px rgba(42,31,20,0.08);
+  border-radius:4px;
+  max-width:min(46ch, 88%);
+}
+.text-panel--right{ max-width:min(42ch, 82%); }
 
 .spread-label{
   font-family:var(--mono);
-  font-size:clamp(0.6rem, 1.4vw, 0.68rem);
+  font-size:clamp(0.62rem, 1vw, 0.7rem);
   letter-spacing:0.1em;
   color:var(--stamp);
   margin:0 0 0.5rem;
@@ -514,30 +541,29 @@ button{ font-family:inherit; }
 .spread-title{
   font-family:var(--display);
   font-weight:600;
-  font-size:clamp(1.6rem, 4.2vw, 2.3rem);
+  font-size:clamp(1.8rem, 3.4vw, 2.6rem);
   line-height:1.05;
   color:var(--ink);
-  margin:0 0 0.85rem;
-  max-width:90%;
+  margin:0 0 0.9rem;
 }
 .spread-intro{
   font-family:var(--body);
-  font-size:clamp(0.8rem, 1.6vw, 0.88rem);
+  font-size:clamp(1rem, 1.15vw, 1.15rem);
   line-height:1.6;
   color:var(--charcoal);
-  max-width:92%;
-  margin-bottom:0.75rem;
 }
 .spread-intro p{ margin:0 0 0.7rem; }
 .spread-intro p:last-child{ margin-bottom:0; }
-.spread-intro .entry-question{
+.spread-intro--right strong{ color:var(--ink); font-weight:600; }
+
+.spread-reflection{
   font-family:var(--display);
   font-style:italic;
   font-weight:500;
   color:var(--stamp);
-  font-size:1.05em;
+  font-size:clamp(1.15rem, 1.6vw, 1.4rem);
+  margin:0.9rem 0 0;
 }
-.spread-intro--right strong{ color:var(--ink); font-weight:600; }
 
 .spread-subnote{
   margin-top:auto;
@@ -546,14 +572,14 @@ button{ font-family:inherit; }
 }
 .subnote-label{
   font-family:var(--mono);
-  font-size:0.62rem;
+  font-size:0.64rem;
   letter-spacing:0.05em;
   color:var(--ink-soft);
   margin:0 0 0.25rem;
 }
 .subnote-text{
   font-family:var(--body);
-  font-size:0.76rem;
+  font-size:0.82rem;
   line-height:1.5;
   color:var(--charcoal);
   background:rgba(251,244,230,0.75);
@@ -564,29 +590,49 @@ button{ font-family:inherit; }
 
 .page-number{
   font-family:var(--mono);
-  font-size:0.68rem;
-  color:var(--ink-soft);
+  font-size:0.7rem;
+  color:rgba(251,244,230,0.85);
   margin-top:auto;
   padding-top:0.75rem;
   align-self:flex-start;
+  text-shadow:0 1px 2px rgba(0,0,0,0.4);
 }
 
-/* Photo frames on the spread */
+/* ---- Photo frames: large, tiered, purposefully placed ---- */
 .spread-photos{
   display:flex;
-  flex-wrap:wrap;
-  gap:0.9rem;
-  margin:0.4rem 0 0.6rem;
+  align-items:flex-end;
+  gap:1.1rem;
+  margin:0.6rem 0;
 }
+.spread-photos.photos-lower-left{
+  position:absolute;
+  left:clamp(1rem, 4%, 2rem);
+  bottom:clamp(2.5rem, 8%, 4rem);
+  margin:0;
+  z-index:2;
+}
+.spread-photos.photos-upper-mid{
+  position:absolute;
+  top:clamp(4.5rem, 16%, 6.5rem);
+  left:50%;
+  transform:translateX(-50%);
+  margin:0;
+  z-index:2;
+}
+
 .photo-frame{
   position:relative;
-  width:clamp(72px, 15vw, 108px);
   background:var(--white);
-  padding:5px 5px 8px;
+  padding:6px 6px 10px;
   border-radius:2px;
-  box-shadow:0 10px 20px -10px rgba(0,0,0,0.45);
+  box-shadow:0 16px 32px -12px rgba(0,0,0,0.5);
   transform:rotate(var(--tilt, 0deg));
 }
+.photo-frame--primary{ width:clamp(160px, 30%, 320px); }
+.photo-frame--secondary{ width:clamp(120px, 22%, 240px); }
+.photo-frame--detail{ width:clamp(90px, 15%, 170px); }
+
 .photo-frame img{
   display:block;
   width:100%;
@@ -603,46 +649,47 @@ button{ font-family:inherit; }
 .photo-frame--empty::after{
   content:"+ photo";
   font-family:var(--mono);
-  font-size:0.55rem;
+  font-size:0.65rem;
   color:var(--ink-soft);
 }
 .photo-deco{ position:absolute; z-index:2; }
 .photo-deco--pin{
-  top:-6px; left:50%; transform:translateX(-50%);
-  width:10px; height:10px; border-radius:50%;
+  top:-7px; left:50%; transform:translateX(-50%);
+  width:12px; height:12px; border-radius:50%;
   background:radial-gradient(circle at 35% 30%, #E8B4A0, var(--stamp) 70%);
-  box-shadow:0 2px 3px rgba(0,0,0,0.4);
+  box-shadow:0 2px 4px rgba(0,0,0,0.4);
 }
 .photo-deco--tape{
-  top:-8px; left:50%; transform:translateX(-50%) rotate(-3deg);
-  width:36px; height:14px;
+  top:-9px; left:50%; transform:translateX(-50%) rotate(-3deg);
+  width:44px; height:16px;
   background:rgba(233,220,190,0.75);
   box-shadow:0 1px 2px rgba(0,0,0,0.15);
 }
 .photo-deco--paperclip{
-  top:-10px; right:8px; color:var(--ink-soft);
+  top:-12px; right:10px; color:var(--ink-soft);
   filter:drop-shadow(0 2px 2px rgba(0,0,0,0.3));
 }
 .photo-frame--stamp-edge{
-  padding:5px;
+  padding:6px;
   border:1px dashed rgba(27,42,65,0.35);
 }
 
 /* Circular postmark stamp */
 .spread-stamp{
   position:relative;
-  width:62px;
-  height:62px;
+  width:68px;
+  height:68px;
   color:var(--stamp);
   margin-bottom:0.8rem;
   display:flex;
   align-items:center;
   justify-content:center;
+  filter:drop-shadow(0 2px 4px rgba(0,0,0,0.3));
 }
 .stamp-ring{ position:absolute; inset:0; width:100%; height:100%; }
 .stamp-text{
   font-family:var(--mono);
-  font-size:0.46rem;
+  font-size:0.48rem;
   letter-spacing:0.03em;
   text-align:center;
   line-height:1.2;
@@ -651,11 +698,12 @@ button{ font-family:inherit; }
 
 .spread-caption{
   font-family:var(--hand);
-  font-size:1.15rem;
+  font-size:1.3rem;
   color:var(--pen-ink);
   transform:rotate(-1.5deg);
   margin:0 0 0.9rem;
   max-width:80%;
+  text-shadow:0 1px 3px rgba(251,244,230,0.6);
 }
 
 .torn-note{
@@ -663,7 +711,7 @@ button{ font-family:inherit; }
   align-self:flex-start;
   font-family:var(--body);
   font-style:italic;
-  font-size:0.72rem;
+  font-size:0.76rem;
   color:var(--ink-soft);
   background:rgba(251,244,230,0.85);
   padding:0.35rem 0.6rem;
@@ -673,14 +721,14 @@ button{ font-family:inherit; }
 
 .ticket-cta{
   margin-top:auto;
-  align-self:flex-start;
+  align-self:flex-end;
   display:flex;
   flex-direction:column;
   gap:0.1rem;
-  background:rgba(251,244,230,0.9);
+  background:rgba(251,244,230,0.92);
   border:1.5px dashed var(--ink);
   border-radius:4px;
-  padding:0.6rem 1rem;
+  padding:0.65rem 1.1rem;
   cursor:pointer;
   transition:transform 0.2s ease, background 0.2s ease;
   font-family:inherit;
@@ -688,7 +736,7 @@ button{ font-family:inherit; }
 .ticket-cta:hover{ background:var(--white); transform:translateY(-2px); }
 .ticket-label{
   font-family:var(--mono);
-  font-size:0.58rem;
+  font-size:0.6rem;
   letter-spacing:0.08em;
   text-transform:uppercase;
   color:var(--ink-soft);
@@ -696,7 +744,7 @@ button{ font-family:inherit; }
 .ticket-next{
   font-family:var(--display);
   font-weight:600;
-  font-size:1.05rem;
+  font-size:1.1rem;
   color:var(--ink);
   display:flex;
   align-items:center;
@@ -705,13 +753,25 @@ button{ font-family:inherit; }
 .ticket-cta:hover .ticket-next .arrow{ transform:translateX(3px); }
 .ticket-next .arrow{ transition:transform 0.2s ease; }
 
-/* Mobile: stack pages vertically */
+/* Mobile: full-screen stacked pages, enlarged photos */
 @media (max-width:760px){
-  .spread{ flex-direction:column; box-shadow:0 25px 55px -20px rgba(0,0,0,0.5); }
+  .chapter--spread{ align-items:stretch; }
+  .spread{
+    flex-direction:column;
+    width:100vw;
+    height:auto;
+    aspect-ratio:unset;
+    box-shadow:none;
+  }
   .spread-seam{ display:none; }
-  .spread-page{ aspect-ratio:2/3; flex:none; width:100%; }
-  .spread-title{ max-width:100%; }
-  .spread-intro{ max-width:100%; }
+  .spread-page{ width:100%; height:auto; aspect-ratio:2/3; flex:none; }
+  .text-panel{ max-width:92%; }
+  .text-panel--right{ max-width:92%; }
+  .spread-photos.photos-lower-left{ bottom:clamp(1.5rem, 6%, 3rem); }
+  .spread-photos.photos-upper-mid{ top:clamp(3.5rem, 14%, 5rem); }
+  .photo-frame--primary{ width:clamp(150px, 42%, 220px); }
+  .photo-frame--secondary{ width:clamp(110px, 32%, 170px); }
+  .photo-frame--detail{ width:clamp(85px, 22%, 130px); }
 }
 
 
@@ -762,6 +822,22 @@ button{ font-family:inherit; }
   border-radius:6px;
   border:1px solid rgba(27,42,65,0.18);
   box-shadow:0 18px 40px -22px rgba(27,42,65,0.45);
+  transition:height 0.4s ease;
+}
+
+/* Once the journey has begun, each book chapter has its own integrated
+   ticket CTA — the top onboarding circles, the big map, and the floating
+   arrow become unnecessary chrome competing with the immersive book. */
+body.journey-started .progress-nav{ display:none; }
+body.journey-started .flight-dock{ display:none; }
+body.journey-started .flight-caption{ display:none; }
+body.journey-started .flight-section{ padding:0.4rem 1rem; }
+body.journey-started #flight-map{
+  height:64px;
+  min-height:64px;
+  max-width:480px;
+  border-radius:999px;
+  box-shadow:0 8px 18px -10px rgba(27,42,65,0.35);
 }
 
 .stamp-marker--map{
@@ -1056,6 +1132,7 @@ button{ font-family:inherit; }
 
 .chapter{ padding-bottom:6.5rem; }
 .chapter-inner--final{ padding-bottom:2rem; }
+.chapter--spread{ padding-bottom:0; }
 
 /* Focus visibility */
 a:focus-visible, button:focus-visible{

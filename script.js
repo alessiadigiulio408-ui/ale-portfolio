@@ -49,8 +49,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const tilt = photo.tilt || 0;
     const ratio = photo.ratio || "1/1";
     const frameClass = photo.deco ? ` photo-frame--${photo.deco}` : "";
+    const sizeClass = ` photo-frame--${photo.size || "secondary"}`;
     return `
-      <div class="photo-frame${frameClass}" style="--tilt:${tilt}deg; aspect-ratio:${ratio.replace("/", "/")};">
+      <div class="photo-frame${frameClass}${sizeClass}" style="--tilt:${tilt}deg; aspect-ratio:${ratio};">
         ${decoIcons[photo.deco] || ""}
         <img src="images/${photo.file}" alt="" loading="lazy"
              onerror="this.parentElement.classList.add('photo-frame--empty'); this.remove();">
@@ -70,10 +71,13 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="spread-page spread-page--left">
           <img class="spread-bg" src="${ch.bgLeft}" alt="" loading="lazy">
           <div class="page-content">
-            <p class="spread-label">${ch.label}</p>
-            <h2 class="spread-title">${ch.title}</h2>
-            <div class="spread-intro">${ch.leftIntro || ""}</div>
-            ${ch.leftPhotos && ch.leftPhotos.length ? `<div class="spread-photos">${ch.leftPhotos.map(spreadPhotoHtml).join("")}</div>` : ""}
+            <div class="text-panel">
+              <p class="spread-label">${ch.label}</p>
+              <h2 class="spread-title">${ch.title}</h2>
+              <div class="spread-intro">${ch.leftIntro || ""}</div>
+              ${ch.leftReflection ? `<p class="spread-reflection">${ch.leftReflection}</p>` : ""}
+            </div>
+            ${ch.leftPhotos && ch.leftPhotos.length ? `<div class="spread-photos ${ch.leftPhotosClass || ""}">${ch.leftPhotos.map(spreadPhotoHtml).join("")}</div>` : ""}
             ${ch.leftSubNote ? `
               <div class="spread-subnote">
                 <p class="subnote-label">${ch.leftSubNote.label}</p>
@@ -94,8 +98,8 @@ document.addEventListener("DOMContentLoaded", () => {
               </div>
             ` : ""}
             ${ch.rightCaption ? `<p class="spread-caption">${ch.rightCaption}</p>` : ""}
-            ${ch.rightIntro ? `<div class="spread-intro spread-intro--right">${ch.rightIntro}</div>` : ""}
-            ${ch.rightPhotos && ch.rightPhotos.length ? `<div class="spread-photos">${ch.rightPhotos.map(spreadPhotoHtml).join("")}</div>` : ""}
+            ${ch.rightIntro ? `<div class="text-panel text-panel--right"><div class="spread-intro spread-intro--right">${ch.rightIntro}</div></div>` : ""}
+            ${ch.rightPhotos && ch.rightPhotos.length ? `<div class="spread-photos ${ch.rightPhotosClass || ""}">${ch.rightPhotos.map(spreadPhotoHtml).join("")}</div>` : ""}
             ${ch.tornNote ? `<span class="torn-note">${ch.tornNote}</span>` : ""}
             <button class="ticket-cta continue-btn" data-index="${i}">
               <span class="ticket-label">Continue the Journey</span>
@@ -379,7 +383,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   document.getElementById("begin-journey").addEventListener("click", () => {
-    document.getElementById("flight-dock").hidden = false;
+    document.body.classList.add("journey-started");
     advanceJourney();
   });
 
