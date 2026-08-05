@@ -4,7 +4,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const tagline = document.getElementById("cover-tagline");
   tagline.textContent = coverTagline;
 
-  let unlockedUpTo = -1; // -1 = only cover visible
+  const stops = journeyChapters.filter((ch) => !ch.isFinal); // the 5 flyable stops
+  const finalChapter = journeyChapters.find((ch) => ch.isFinal);
+  const PHANTOM_START = { lat: 5, lng: -80 }; // "off the map" starting point, southwest of Caracas
+
+  let unlockedUpTo = -1; // index into journeyChapters; -1 = only cover visible
+  let flying = false;
 
   // ---------- BUILD PROGRESS NAV ----------
   journeyChapters.forEach((ch, i) => {
@@ -31,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ---------- BUILD CHAPTER PHOTO GRID ----------
+  // ---------- CHAPTER CONTENT HELPERS ----------
   function photoFilename(name) {
     return `
       <div class="polaroid">
@@ -92,7 +97,6 @@ document.addEventListener("DOMContentLoaded", () => {
       section.innerHTML = `
         <div class="chapter-inner">
           <p class="chapter-kicker">${ch.kicker}</p>
-          <div class="locator-map" id="locator-${ch.id}"></div>
           <p class="chapter-destination">${ch.destination}</p>
           <h2 class="chapter-title">${ch.title}</h2>
           ${ch.entries.map(entryHtml).join("")}
@@ -105,42 +109,92 @@ document.addEventListener("DOMContentLoaded", () => {
     root.appendChild(section);
   });
 
-  // ---------- LOCATOR MAPS (decorative, non-interactive, lazy-initialized) ----------
-  const initializedMaps = new Set();
+  // ---------- FLIGHT MAP (persistent, shows all stops + route) ----------
+  const mapEl = document.getElementById("flight-map");
+  const bounds = stops.map((s) => [s.lat, s.lng]);
+  const map = L.map(mapEl, {
+    scrollWheelZoom: false,
+    zoomControl: true
+  });
+  map.fitBounds(bounds, { padding: [36, 36] });
 
-  function initLocatorMap(ch) {
-    if (ch.isFinal || initializedMaps.has(ch.id)) return;
-    const el = document.getElementById(`locator-${ch.id}`);
-    if (!el) return;
-    try {
-      const map = L.map(el, {
-        center: [ch.lat, ch.lng],
-        zoom: 10,
-        zoomControl: false,
-        dragging: false,
-        scrollWheelZoom: false,
-        doubleClickZoom: false,
-        boxZoom: false,
-        keyboard: false,
-        touchZoom: false,
-        attributionControl: false
-      });
-      L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
-        maxZoom: 14
-      }).addTo(map);
-      const icon = L.divIcon({
-        className: "",
-        html: `<div class="stamp-marker stamp-marker--small">${ch.number}</div>`,
-        iconSize: [30, 30],
-        iconAnchor: [15, 15]
-      });
-      L.marker([ch.lat, ch.lng], { icon }).addTo(map);
-      initializedMaps.add(ch.id);
-      requestAnimationFrame(() => map.invalidateSize());
-    } catch (err) {
-      // A locator map failing to render should never break navigation.
-      console.warn("Locator map failed to initialize:", ch.id, err);
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
+    attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+    maxZoom: 18
+  }).addTo(map);
+
+  L.polyline(bounds, {
+    color: "#A9843F",
+    weight: 2,
+    dashArray: "2 8",
+    opacity: 0.85
+  }).addTo(map);
+
+  const stopMarkers = {};
+  stops.forEach((ch, i) => {
+    const icon = L.divIcon({
+      className: "",
+      html: `<div class="stamp-marker stamp-marker--map" data-state="locked">${ch.number}</div>`,
+      iconSize: [34, 34],
+      iconAnchor: [17, 17]
+    });
+    const marker = L.marker([ch.lat, ch.lng], { icon }).addTo(map);
+    marker.on("click", () => {
+      const chapterIndex = journeyChapters.indexOf(ch);
+      if (chapterIndex <= unlockedUpTo) scrollToChapter(chapterIndex);
+    });
+    stopMarkers[ch.id] = marker;
+  });
+
+  function updateMapMarkerStates(currentStopIndex) {
+    stops.forEach((ch, i) => {
+      const el = stopMarkers[ch.id].getElement();
+      if (!el) return;
+      const stampEl = el.querySelector(".stamp-marker");
+      if (!stampEl) return;
+      stampEl.dataset.state = i < currentStopIndex ? "done" : i === currentStopIndex ? "current" : "locked";
+    });
+  }
+
+  // Plane marker
+  const planeIcon = L.divIcon({
+    className: "",
+    html: `<div class="plane-marker" id="plane-icon">✈</div>`,
+    iconSize: [30, 30],
+    iconAnchor: [15, 15]
+  });
+  const planeMarker = L.marker([PHANTOM_START.lat, PHANTOM_START.lng], {
+    icon: planeIcon,
+    interactive: false
+  });
+
+  // ---------- FLIGHT ANIMATION ----------
+  function flyPlaneTo(from, to, duration, onDone) {
+    if (!planeMarker._map) planeMarker.addTo(map);
+    const start = performance.now();
+    const dLat = to.lat - from.lat;
+    const dLng = to.lng - from.lng;
+    const dist = Math.hypot(dLat, dLng) || 0.0001;
+    const perpLat = -dLng / dist;
+    const perpLng = dLat / dist;
+    const arcHeight = Math.min(dist * 0.28, 6);
+    const angle = (Math.atan2(dLng, dLat) * 180) / Math.PI;
+    const planeEl = document.getElementById("plane-icon");
+    if (planeEl) planeEl.style.transform = `rotate(${angle}deg)`;
+
+    function frame(now) {
+      const t = Math.min((now - start) / duration, 1);
+      const eased = t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+      const lat = from.lat + dLat * eased + perpLat * Math.sin(Math.PI * t) * arcHeight;
+      const lng = from.lng + dLng * eased + perpLng * Math.sin(Math.PI * t) * arcHeight;
+      planeMarker.setLatLng([lat, lng]);
+      if (t < 1) {
+        requestAnimationFrame(frame);
+      } else {
+        onDone();
+      }
     }
+    requestAnimationFrame(frame);
   }
 
   // ---------- NAVIGATION LOGIC ----------
@@ -148,30 +202,100 @@ document.addEventListener("DOMContentLoaded", () => {
     const ch = journeyChapters[i];
     const el = document.getElementById(`chapter-${ch.id}`);
     if (el) {
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
+      try {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      } catch (err) {
+        console.warn("scrollIntoView failed:", err);
+      }
       updateNav(i);
     }
   }
 
-  function unlockChapter(i) {
+  function revealChapter(i) {
     if (i >= journeyChapters.length) return;
     const ch = journeyChapters[i];
     const el = document.getElementById(`chapter-${ch.id}`);
     if (el) el.hidden = false;
     if (i > unlockedUpTo) unlockedUpTo = i;
-    initLocatorMap(ch);
-    scrollToChapter(i);
+    updateAdvanceButton();
+  }
+
+  function updateAdvanceButton() {
+    const dock = document.getElementById("flight-dock");
+    const label = document.getElementById("advance-label");
+    const nextIndex = unlockedUpTo + 1;
+    if (nextIndex >= journeyChapters.length) {
+      dock.hidden = true;
+      return;
+    }
+    dock.hidden = false;
+    const nextCh = journeyChapters[nextIndex];
+    label.textContent = nextCh.isFinal ? "Finish" : `Fly to ${nextCh.destination.split(",")[0]}`;
+  }
+
+  function advanceJourney() {
+    if (flying) return;
+    const nextIndex = unlockedUpTo + 1;
+    if (nextIndex >= journeyChapters.length) return;
+    const nextCh = journeyChapters[nextIndex];
+
+    if (nextCh.isFinal) {
+      revealChapter(nextIndex);
+      scrollToChapter(nextIndex);
+      return;
+    }
+
+    flying = true;
+    const advanceBtn = document.getElementById("advance-btn");
+    advanceBtn.disabled = true;
+
+    const finish = () => {
+      flying = false;
+      advanceBtn.disabled = false;
+    };
+
+    const stopIndex = stops.indexOf(nextCh);
+    const from = stopIndex === 0
+      ? PHANTOM_START
+      : { lat: stops[stopIndex - 1].lat, lng: stops[stopIndex - 1].lng };
+    const to = { lat: nextCh.lat, lng: nextCh.lng };
+
+    try {
+      document.getElementById("flight-section").scrollIntoView({ behavior: "smooth", block: "center" });
+    } catch (err) {
+      console.warn("Scroll to map failed, continuing anyway:", err);
+    }
+
+    // Give the scroll a beat before starting the flight animation.
+    setTimeout(() => {
+      const land = () => {
+        updateMapMarkerStates(stopIndex + 1);
+        revealChapter(nextIndex);
+        finish();
+        setTimeout(() => scrollToChapter(nextIndex), 350);
+      };
+      try {
+        flyPlaneTo(from, to, 1400, land);
+      } catch (err) {
+        // If the flight animation fails for any reason, never leave the
+        // journey stuck — reveal the chapter immediately instead.
+        console.warn("Flight animation failed, revealing chapter directly:", err);
+        land();
+      }
+    }, 450);
   }
 
   document.getElementById("begin-journey").addEventListener("click", () => {
-    unlockChapter(0);
+    document.getElementById("flight-dock").hidden = false;
+    advanceJourney();
   });
+
+  document.getElementById("advance-btn").addEventListener("click", advanceJourney);
 
   root.addEventListener("click", (e) => {
     const btn = e.target.closest(".continue-btn");
     if (btn) {
-      const i = Number(btn.dataset.index);
-      unlockChapter(i + 1);
+      advanceJourney();
       return;
     }
     if (e.target.closest("#restart-journey")) {

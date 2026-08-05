@@ -12,7 +12,7 @@
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
-<link rel="stylesheet" href="style.css?v=2">
+<link rel="stylesheet" href="style.css?v=3">
 </head>
 <body>
 
@@ -30,11 +30,25 @@
   <div class="cover-border" aria-hidden="true"></div>
 </section>
 
+<!-- FLIGHT MAP -->
+<section class="flight-section" id="flight-section">
+  <p class="flight-caption">Tap the arrow below to fly to the next stop</p>
+  <div id="flight-map"></div>
+</section>
+
 <!-- CHAPTERS render here via script.js -->
 <main id="chapters-root"></main>
 
+<!-- FIXED BOTTOM FLIGHT CONTROL -->
+<div class="flight-dock" id="flight-dock" hidden>
+  <button class="advance-btn" id="advance-btn" aria-label="Fly to next stop">
+    <span class="advance-plane">✈</span>
+    <span class="advance-label" id="advance-label">Next Stop</span>
+  </button>
+</div>
+
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="data.js?v=2"></script>
-<script src="script.js?v=3"></script>
+<script src="script.js?v=4"></script>
 </body>
 </html>
