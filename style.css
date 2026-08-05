@@ -89,14 +89,21 @@ button{ font-family:inherit; }
 .nav-stamp:disabled{ opacity:0.45; }
 
 /* ===== PASSPORT COVER (3D book) ===== */
+:root{
+  --forest:#173B2C;
+  --forest-deep:#0E271C;
+  --ivory:#FBF4E6;
+  --gold-line:#B89355;
+}
+
 .passport-intro{
   min-height:100svh;
   display:flex;
   align-items:center;
   justify-content:center;
   background:
-    radial-gradient(circle at 20% 15%, rgba(201,169,104,0.10), transparent 45%),
-    radial-gradient(circle at 85% 80%, rgba(156,59,44,0.12), transparent 50%),
+    radial-gradient(circle at 20% 15%, rgba(184,147,85,0.08), transparent 45%),
+    radial-gradient(circle at 85% 80%, rgba(23,59,44,0.25), transparent 50%),
     linear-gradient(180deg, var(--ink) 0%, #0F1826 100%);
   padding:2.5rem 1.25rem;
 }
@@ -112,65 +119,96 @@ button{ font-family:inherit; }
 .passport-page-data{
   position:absolute;
   inset:0;
-  background:var(--paper);
-  border-radius:8px;
+  background:var(--forest);
+  border-radius:10px;
   box-shadow:0 30px 70px -20px rgba(0,0,0,0.55);
   overflow-y:auto;
   z-index:1;
+  padding:7px; /* dark-green "cover edge" visible around the ivory page */
 }
 .data-page-inner{
-  padding:1.75rem 1.5rem 1.5rem;
+  position:relative;
+  height:100%;
+  background:
+    repeating-linear-gradient(0deg, rgba(120,95,55,0.025) 0px, transparent 1px, transparent 2px),
+    repeating-linear-gradient(90deg, rgba(120,95,55,0.02) 0px, transparent 1px, transparent 3px),
+    var(--ivory);
+  border-radius:5px;
+  padding:1.85rem 1.4rem 1.4rem;
   display:flex;
   flex-direction:column;
   align-items:center;
   text-align:center;
+  box-shadow:inset 0 0 0 1px rgba(184,147,85,0.5);
 }
+
+.deco-compass{
+  width:34px;
+  height:34px;
+  color:var(--gold-line);
+  margin-bottom:0.6rem;
+  opacity:0.85;
+}
+.deco-palm{
+  width:44px;
+  height:30px;
+  color:var(--forest);
+  opacity:0.65;
+  margin:0.9rem 0 0.4rem;
+}
+
 .headshot-frame{
-  width:88px;
-  height:88px;
+  width:84px;
+  height:84px;
   border-radius:50%;
-  border:2px solid var(--brass);
+  border:1.5px solid var(--gold-line);
   overflow:hidden;
   margin-bottom:0.85rem;
   display:flex;
   align-items:center;
   justify-content:center;
-  background:var(--paper-dark);
+  background:rgba(184,147,85,0.08);
+  box-shadow:0 0 0 4px var(--ivory), 0 0 0 5px rgba(184,147,85,0.3);
 }
 .headshot-frame img{ width:100%; height:100%; object-fit:cover; }
 .headshot-frame.is-empty::after{
   content:"+ photo";
   font-family:var(--mono);
-  font-size:0.7rem;
+  font-size:0.65rem;
   color:var(--ink-soft);
 }
 .data-tagline{
   font-family:var(--body);
   font-style:italic;
-  font-size:0.8rem;
+  font-size:0.78rem;
   line-height:1.5;
   color:var(--ink-soft);
   max-width:280px;
-  margin:0 0 1.1rem;
+  margin:0 0 1.2rem;
 }
 .data-label{
   font-family:var(--mono);
-  font-size:0.65rem;
-  letter-spacing:0.1em;
+  font-size:0.62rem;
+  letter-spacing:0.12em;
   text-transform:uppercase;
-  color:var(--brass);
-  margin:0.7rem 0 0.15rem;
+  color:var(--gold-line);
+  margin:0.9rem 0 0.25rem;
+  padding-top:0.85rem;
+  width:100%;
+  border-top:1px solid rgba(184,147,85,0.35);
 }
+.data-label:first-of-type{ border-top:none; padding-top:0; margin-top:0.3rem; }
+.data-label--first{ border-top:none !important; padding-top:0 !important; margin-top:0.3rem !important; }
 .data-name{
   font-family:var(--display);
   font-weight:600;
-  font-size:1.35rem;
-  color:var(--ink);
+  font-size:1.3rem;
+  color:var(--forest);
   margin:0;
 }
 .data-value{
   font-family:var(--body);
-  font-size:0.88rem;
+  font-size:0.86rem;
   color:var(--charcoal);
   margin:0;
 }
@@ -179,35 +217,119 @@ button{ font-family:inherit; }
   flex-wrap:wrap;
   gap:0.4rem;
   justify-content:center;
-  margin:0.8rem 0 0.2rem;
+  margin:0.9rem 0 0.2rem;
 }
 .pill{
   font-family:var(--mono);
-  font-size:0.66rem;
+  font-size:0.64rem;
   letter-spacing:0.02em;
-  color:var(--ink);
-  background:var(--paper-dark);
-  border:1px solid rgba(27,42,65,0.2);
+  color:var(--forest);
+  background:none;
+  border:1px solid rgba(23,59,44,0.35);
   padding:0.28rem 0.65rem;
   border-radius:999px;
 }
+
+/* ---- Journey teaser (compact "right page" preview) ---- */
+.journey-teaser{
+  width:100%;
+  margin-top:1.2rem;
+  padding-top:1rem;
+  border-top:1px solid rgba(184,147,85,0.35);
+}
+.teaser-kicker{
+  font-family:var(--mono);
+  font-size:0.6rem;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:var(--gold-line);
+  margin:0 0 0.9rem;
+}
+.teaser-route{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:0.4rem;
+  margin-bottom:1rem;
+}
+.teaser-stamp{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:0.15rem;
+  width:56px;
+  height:56px;
+  border-radius:50%;
+  border:1.5px dashed var(--forest);
+  justify-content:center;
+  flex:none;
+}
+.teaser-stamp-city{
+  font-family:var(--display);
+  font-weight:600;
+  font-size:0.85rem;
+  color:var(--forest);
+}
+.teaser-stamp-label{
+  font-family:var(--mono);
+  font-size:0.5rem;
+  letter-spacing:0.04em;
+  text-transform:uppercase;
+  color:var(--ink-soft);
+}
+.teaser-route-line{
+  position:relative;
+  flex:1 1 auto;
+  height:20px;
+  color:var(--gold-line);
+}
+.teaser-route-line svg{ width:100%; height:100%; display:block; }
+.teaser-plane{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  font-size:0.85rem;
+  color:var(--forest);
+  background:var(--ivory);
+  padding:0 2px;
+}
+.ticket-card{
+  display:flex;
+  flex-direction:column;
+  gap:0.35rem;
+  border:1px solid rgba(23,59,44,0.3);
+  border-radius:4px;
+  padding:0.7rem 0.85rem;
+  background:rgba(184,147,85,0.06);
+}
+.ticket-row{
+  display:flex;
+  justify-content:space-between;
+  gap:1rem;
+  font-family:var(--mono);
+  font-size:0.68rem;
+  color:var(--ink-soft);
+}
+.ticket-row strong{ color:var(--forest); font-weight:700; }
+
 .signature{
   font-family:var(--hand);
-  font-size:1.7rem;
-  color:var(--ink);
-  margin:1rem 0 1.1rem;
+  font-size:1.6rem;
+  color:var(--forest);
+  margin:1.3rem 0 0.3rem;
   transform:rotate(-2deg);
 }
 .mrz-line{
   font-family:var(--mono);
-  font-size:0.6rem;
+  font-size:0.58rem;
   letter-spacing:0.05em;
   line-height:1.6;
   color:var(--ink-soft);
-  background:var(--paper-dark);
+  background:rgba(23,59,44,0.06);
   border-radius:3px;
   padding:0.55rem 0.6rem;
-  margin-top:1.2rem;
+  margin-top:0.4rem;
   width:100%;
 }
 
@@ -220,13 +342,16 @@ button{ font-family:inherit; }
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  gap:1rem;
-  padding:2rem;
+  gap:0.9rem;
+  padding:2.1rem;
   border:none;
-  border-radius:8px;
-  background:linear-gradient(160deg, var(--ink) 0%, #10192B 100%);
-  box-shadow:0 25px 60px -18px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(201,169,104,0.35);
-  color:var(--paper);
+  border-radius:12px;
+  background:
+    repeating-linear-gradient(135deg, rgba(0,0,0,0.05) 0px, rgba(0,0,0,0.05) 1px, transparent 1px, transparent 3px),
+    radial-gradient(circle at 30% 15%, rgba(255,255,255,0.05), transparent 55%),
+    linear-gradient(160deg, var(--forest) 0%, var(--forest-deep) 100%);
+  box-shadow:0 25px 60px -18px rgba(0,0,0,0.6);
+  color:var(--ivory);
   cursor:pointer;
   transform-origin:left center;
   backface-visibility:hidden;
@@ -237,35 +362,60 @@ button{ font-family:inherit; }
   transform:rotateY(-100deg);
   pointer-events:none;
 }
-.cover-emblem{ color:var(--brass-light); }
+.cover-frame-border{
+  position:absolute;
+  inset:14px;
+  border:1px solid var(--gold-line);
+  border-radius:4px;
+  pointer-events:none;
+}
+.cover-frame-border::before{
+  content:"";
+  position:absolute;
+  inset:5px;
+  border:1px solid rgba(184,147,85,0.55);
+}
+.cover-emblem{ color:var(--gold-line); }
+.cover-divider{
+  display:flex;
+  align-items:center;
+  gap:0.5rem;
+  width:70%;
+  max-width:180px;
+  color:var(--gold-line);
+}
+.cover-divider i{ flex:1 1 auto; height:1px; background:rgba(184,147,85,0.5); }
+.cover-divider em{ font-style:normal; font-size:0.6rem; }
 .cover-eyebrow{
   font-family:var(--mono);
-  font-size:0.66rem;
-  letter-spacing:0.14em;
+  font-size:0.62rem;
+  letter-spacing:0.16em;
   text-transform:uppercase;
-  color:var(--brass-light);
+  color:var(--gold-line);
   margin:0;
   text-align:center;
 }
 .cover-name{
   font-family:var(--display);
   font-weight:600;
-  font-size:clamp(1.9rem, 8vw, 2.6rem);
-  line-height:1.05;
+  font-size:clamp(1.85rem, 7.5vw, 2.5rem);
+  line-height:1.08;
   margin:0;
   text-align:center;
-  letter-spacing:-0.01em;
+  letter-spacing:0.01em;
+  color:var(--ivory);
+  text-shadow:0 1px 0 rgba(0,0,0,0.35), 0 -1px 0 rgba(184,147,85,0.15);
 }
 .cover-tap-hint{
   font-family:var(--body);
-  font-size:0.8rem;
-  color:rgba(241,234,217,0.7);
-  margin:0.5rem 0 0;
+  font-size:0.78rem;
+  color:rgba(251,244,230,0.65);
+  margin:0.2rem 0 0;
   animation:tapPulse 2.2s ease-in-out infinite;
 }
 @keyframes tapPulse{
-  0%, 100%{ opacity:0.55; }
-  50%{ opacity:1; }
+  0%, 100%{ opacity:0.5; }
+  50%{ opacity:0.95; }
 }
 
 /* ---- Begin Journey button (now on the data page) ---- */
@@ -273,19 +423,20 @@ button{ font-family:inherit; }
   display:inline-flex;
   align-items:center;
   gap:0.5rem;
-  border:none;
+  border:1px solid var(--forest);
   text-decoration:none;
   font-family:var(--body);
   font-weight:600;
-  font-size:0.9rem;
-  color:var(--white);
-  background:var(--stamp);
-  padding:0.75rem 1.5rem;
+  font-size:0.88rem;
+  color:var(--ivory);
+  background:var(--forest);
+  padding:0.7rem 1.4rem;
   border-radius:999px;
   cursor:pointer;
   transition:transform 0.25s ease, background 0.25s ease;
+  margin-top:1.3rem;
 }
-.cover-cta:hover{ background:#7d2f22; transform:translateY(-2px); }
+.cover-cta:hover{ background:var(--forest-deep); transform:translateY(-2px); }
 .cover-cta .arrow{ transition:transform 0.25s ease; }
 .cover-cta:hover .arrow{ transform:translateX(3px); }
 
