@@ -63,7 +63,22 @@
   }
   .nav-links a{ opacity:0.75; transition:opacity 0.2s ease; }
   .nav-links a:hover{ opacity:1; }
+  .nav-links a.is-active{ opacity:1; border-bottom:1px solid var(--ink); padding-bottom:2px; }
+  .nav-name a{ transition:opacity 0.2s ease; }
+  .nav-name a:hover{ opacity:0.7; }
   .nav-toggle{ display:none; background:none; border:none; font-size:1.4rem; cursor:pointer; color:var(--ink); }
+
+  /* ===== VIEW SWITCHING (no free scroll between sections) ===== */
+  .view{ display:none; }
+  .view.active{ display:block; animation:viewIn 0.35s ease; }
+  .hero.view.active{ display:flex; }
+  @keyframes viewIn{
+    from{ opacity:0; transform:translateY(8px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .view.active{ animation:none; }
+  }
 
   /* ===== HERO ===== */
   .hero{
@@ -259,23 +274,23 @@
 <body>
 
 <nav class="nav">
-  <span class="nav-name">Alessia Di Giulio</span>
+  <span class="nav-name"><a href="#home" data-view-link="home">Alessia Di Giulio</a></span>
   <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">☰</button>
   <ul class="nav-links" id="nav-links">
-    <li><a href="#photography">Photography</a></li>
-    <li><a href="#ai-creations">AI Creations</a></li>
-    <li><a href="#about">About</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li><a href="#photography" data-view-link="photography">Photography</a></li>
+    <li><a href="#ai-creations" data-view-link="ai-creations">AI Creations</a></li>
+    <li><a href="#about" data-view-link="about">About</a></li>
+    <li><a href="#contact" data-view-link="contact">Contact</a></li>
   </ul>
 </nav>
 
-<header class="hero">
+<header class="hero view active" id="home">
   <p class="hero-eyebrow">Marketing &amp; Social Media · Caracas → Boston → Milan → Miami</p>
   <h1 class="hero-name">Alessia<br>Di Giulio</h1>
   <p class="hero-tagline">Social Media Coordinator at Prime Group, bilingual content creator, and a lifelong collector of good photos and small creative experiments.</p>
 </header>
 
-<section id="photography">
+<section id="photography" class="view">
   <div class="section-head">
     <p class="section-label">Photography</p>
     <h2 class="section-title">Pictures I've taken</h2>
@@ -294,7 +309,7 @@
   </div>
 </section>
 
-<section id="ai-creations">
+<section id="ai-creations" class="view">
   <div class="section-head">
     <p class="section-label">AI Creations</p>
     <h2 class="section-title">Things I've made with AI</h2>
@@ -311,7 +326,7 @@
   </div>
 </section>
 
-<section id="about">
+<section id="about" class="view">
   <div class="section-head">
     <p class="section-label">About</p>
     <h2 class="section-title">A bit about me</h2>
@@ -332,7 +347,7 @@
   </div>
 </section>
 
-<section id="contact" class="contact">
+<section id="contact" class="view contact">
   <p class="section-label" style="text-align:center;">Contact</p>
   <h2 class="contact-title">Let's talk</h2>
   <div class="contact-links">
@@ -344,12 +359,38 @@
 <footer>Alessia Di Giulio © 2026</footer>
 
 <script>
+  const views = document.querySelectorAll('.view');
+  const navLinks = document.querySelectorAll('[data-view-link]');
+  const validViews = new Set(Array.from(views).map(v => v.id));
+
+  function showView(id, updateHash) {
+    if (!validViews.has(id)) id = 'home';
+    views.forEach(v => v.classList.toggle('active', v.id === id));
+    navLinks.forEach(a => a.classList.toggle('is-active', a.dataset.viewLink === id));
+    window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+    if (updateHash) {
+      history.pushState(null, '', id === 'home' ? '#' : `#${id}`);
+    }
+    document.getElementById('nav-links').classList.remove('open');
+  }
+
+  navLinks.forEach(a => {
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      showView(a.dataset.viewLink, true);
+    });
+  });
+
+  window.addEventListener('popstate', () => {
+    showView(location.hash.replace('#', '') || 'home', false);
+  });
+
   document.getElementById('nav-toggle').addEventListener('click', () => {
     document.getElementById('nav-links').classList.toggle('open');
   });
-  document.querySelectorAll('.nav-links a').forEach(a => {
-    a.addEventListener('click', () => document.getElementById('nav-links').classList.remove('open'));
-  });
+
+  // Initial view from URL hash, if present
+  showView(location.hash.replace('#', '') || 'home', false);
 </script>
 </body>
 </html>
