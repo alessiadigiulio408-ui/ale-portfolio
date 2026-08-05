@@ -130,7 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }).addTo(map);
       const icon = L.divIcon({
         className: "",
-        html: `<div class="stamp-marker stamp-marker--small">${ch.destination.slice(0, 1)}</div>`,
+        html: `<div class="stamp-marker stamp-marker--small">${ch.number}</div>`,
         iconSize: [30, 30],
         iconAnchor: [15, 15]
       });
