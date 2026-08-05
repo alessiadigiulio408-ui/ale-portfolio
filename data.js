@@ -11,6 +11,9 @@ const journeyChapters = [
   {
     id: "caracas-roots",
     number: 1,
+    accent: "#E8622C",
+    accentSoft: "#FDECD8",
+    emoji: "🌴",
     kicker: "Chapter One",
     destination: "Caracas, Venezuela",
     title: "Where It All Began",
@@ -35,6 +38,9 @@ const journeyChapters = [
   {
     id: "boston-bentley",
     number: 2,
+    accent: "#E63950",
+    accentSoft: "#FDEEF0",
+    emoji: "🎓",
     kicker: "Chapter Two",
     destination: "Boston, Massachusetts",
     title: "Building the Foundation",
@@ -60,6 +66,9 @@ const journeyChapters = [
   {
     id: "the-label",
     number: 3,
+    accent: "#12A594",
+    accentSoft: "#E3F7F3",
+    emoji: "📸",
     kicker: "Chapter Three",
     destination: "Caracas, Venezuela",
     title: "My First Real Experience",
@@ -78,6 +87,9 @@ const journeyChapters = [
   {
     id: "milan",
     number: 4,
+    accent: "#B15FC7",
+    accentSoft: "#F6ECFA",
+    emoji: "🍦",
     kicker: "Chapter Four",
     destination: "Milan, Italy",
     title: "A Global Perspective",
@@ -96,6 +108,9 @@ const journeyChapters = [
   {
     id: "prime-group",
     number: 5,
+    accent: "#E8A73B",
+    accentSoft: "#FDF4E0",
+    emoji: "☀️",
     kicker: "Chapter Five",
     destination: "Aventura, Florida",
     title: "Where It All Comes Together",

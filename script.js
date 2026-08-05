@@ -29,8 +29,10 @@ document.addEventListener("DOMContentLoaded", () => {
   function updateNav(current) {
     document.querySelectorAll(".nav-stamp").forEach((el) => {
       const i = Number(el.dataset.index);
+      const ch = journeyChapters[i];
       el.classList.remove("is-current", "is-done");
       el.disabled = i > unlockedUpTo;
+      if (ch.accent) el.style.setProperty("--accent", ch.accent);
       if (i === current) el.classList.add("is-current");
       else if (i <= unlockedUpTo) el.classList.add("is-done");
     });
@@ -88,6 +90,10 @@ document.addEventListener("DOMContentLoaded", () => {
     section.className = "chapter";
     section.id = `chapter-${ch.id}`;
     section.hidden = true;
+    if (ch.accent) {
+      section.style.setProperty("--accent", ch.accent);
+      section.style.setProperty("--accent-soft", ch.accentSoft);
+    }
 
     if (ch.isFinal) {
       section.innerHTML = `
@@ -105,6 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       section.innerHTML = `
         <div class="chapter-inner">
+          <span class="chapter-sticker">${ch.emoji || ""}</span>
           <p class="chapter-kicker">${ch.kicker}</p>
           <p class="chapter-destination">${ch.destination}</p>
           <h2 class="chapter-title">${ch.title}</h2>
@@ -143,7 +150,7 @@ document.addEventListener("DOMContentLoaded", () => {
   stops.forEach((ch, i) => {
     const icon = L.divIcon({
       className: "",
-      html: `<div class="stamp-marker stamp-marker--map" data-state="locked">${ch.number}</div>`,
+      html: `<div class="stamp-marker stamp-marker--map" data-state="locked" style="--accent:${ch.accent || "#9C3B2C"}">${ch.number}</div>`,
       iconSize: [34, 34],
       iconAnchor: [17, 17]
     });

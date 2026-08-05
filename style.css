@@ -75,13 +75,13 @@ button{ font-family:inherit; }
 }
 .nav-stamp:last-child::after{ display:none; }
 .nav-stamp.is-done{
-  border-color:var(--brass);
-  color:var(--brass);
+  border-color:var(--accent, var(--brass));
+  color:var(--accent, var(--brass));
   cursor:pointer;
 }
 .nav-stamp.is-current{
-  border-color:var(--stamp);
-  background:var(--stamp);
+  border-color:var(--accent, var(--stamp));
+  background:var(--accent, var(--stamp));
   color:var(--white);
   cursor:pointer;
   transform:scale(1.12);
@@ -171,17 +171,34 @@ button{ font-family:inherit; }
   justify-content:center;
   padding:6rem 1.25rem 4rem;
   border-bottom:1px solid rgba(27,42,65,0.1);
+  background:var(--accent-soft, var(--paper));
+  transition:background 0.3s ease;
 }
-.chapter:nth-of-type(even){ background:var(--paper-dark); }
 
-.chapter-inner{ max-width:640px; width:100%; }
+.chapter-inner{ max-width:640px; width:100%; position:relative; }
+
+.chapter-sticker{
+  display:block;
+  width:64px;
+  height:64px;
+  margin:0 auto 1rem;
+  border-radius:50%;
+  background:var(--white);
+  border:2px dashed var(--accent, var(--brass));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:2rem;
+  transform:rotate(-6deg);
+  box-shadow:0 10px 22px -12px rgba(27,42,65,0.35);
+}
 
 .chapter-kicker{
   font-family:var(--mono);
   font-size:0.75rem;
   letter-spacing:0.14em;
   text-transform:uppercase;
-  color:var(--stamp);
+  color:var(--accent, var(--stamp));
   margin:0 0 1.25rem;
   text-align:center;
 }
@@ -226,15 +243,15 @@ button{ font-family:inherit; }
   transition:all 0.3s ease;
 }
 .stamp-marker--map[data-state="current"]{
-  border-color:var(--stamp);
-  background:var(--stamp);
+  border-color:var(--accent, var(--stamp));
+  background:var(--accent, var(--stamp));
   color:var(--white);
   transform:scale(1.15);
-  box-shadow:0 0 0 4px rgba(156,59,44,0.18);
+  box-shadow:0 0 0 4px color-mix(in srgb, var(--accent, var(--stamp)) 25%, transparent);
 }
 .stamp-marker--map[data-state="done"]{
-  border-color:var(--brass);
-  color:var(--brass);
+  border-color:var(--accent, var(--brass));
+  color:var(--accent, var(--brass));
   cursor:pointer;
 }
 
@@ -292,7 +309,7 @@ button{ font-family:inherit; }
   font-family:var(--mono);
   font-size:0.85rem;
   letter-spacing:0.05em;
-  color:var(--brass);
+  color:var(--accent, var(--brass));
   text-align:center;
   margin:0 0 0.3rem;
 }
@@ -319,7 +336,7 @@ button{ font-family:inherit; }
   font-size:0.72rem;
   letter-spacing:0.05em;
   color:var(--white);
-  background:var(--stamp);
+  background:var(--accent, var(--stamp));
   padding:0.2rem 0.6rem;
   border-radius:3px;
   margin-bottom:0.6rem;
@@ -413,7 +430,7 @@ button{ font-family:inherit; }
   flex:0 0 auto;
   width:42px;
   height:42px;
-  border:2px dashed var(--brass);
+  border:2px dashed var(--accent, var(--brass));
   border-radius:50%;
   display:flex;
   align-items:center;
@@ -421,7 +438,7 @@ button{ font-family:inherit; }
   font-size:1.2rem;
   color:var(--brass);
 }
-.postcard-kicker{ font-family:var(--mono); font-size:0.7rem; letter-spacing:0.05em; text-transform:uppercase; color:var(--brass); margin:0 0 0.4rem; }
+.postcard-kicker{ font-family:var(--mono); font-size:0.7rem; letter-spacing:0.05em; text-transform:uppercase; color:var(--accent, var(--brass)); margin:0 0 0.4rem; }
 .postcard-body h4{ font-family:var(--display); font-weight:600; margin:0 0 0.2rem; font-size:1.05rem; color:var(--ink); }
 .postcard-org{ font-family:var(--mono); font-size:0.78rem; color:var(--ink-soft); margin:0 0 0.6rem; }
 .postcard-text{ font-size:0.88rem; line-height:1.55; margin:0; color:var(--charcoal); }
@@ -434,9 +451,9 @@ button{ font-family:inherit; }
   gap:0.5rem;
   width:100%;
   margin-top:2.75rem;
-  border:1.5px solid var(--stamp);
+  border:1.5px solid var(--accent, var(--stamp));
   background:none;
-  color:var(--stamp);
+  color:var(--accent, var(--stamp));
   font-family:var(--body);
   font-weight:600;
   font-size:1rem;
@@ -445,7 +462,7 @@ button{ font-family:inherit; }
   cursor:pointer;
   transition:all 0.25s ease;
 }
-.continue-btn:hover{ background:var(--stamp); color:var(--white); }
+.continue-btn:hover{ background:var(--accent, var(--stamp)); color:var(--white); }
 .continue-btn .arrow{ transition:transform 0.25s ease; }
 .continue-btn:hover .arrow{ transform:translateX(4px); }
 
