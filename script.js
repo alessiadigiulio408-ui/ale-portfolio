@@ -105,34 +105,43 @@ document.addEventListener("DOMContentLoaded", () => {
     root.appendChild(section);
   });
 
-  // ---------- LOCATOR MAPS (decorative, non-interactive) ----------
-  journeyChapters.forEach((ch) => {
-    if (ch.isFinal) return;
+  // ---------- LOCATOR MAPS (decorative, non-interactive, lazy-initialized) ----------
+  const initializedMaps = new Set();
+
+  function initLocatorMap(ch) {
+    if (ch.isFinal || initializedMaps.has(ch.id)) return;
     const el = document.getElementById(`locator-${ch.id}`);
     if (!el) return;
-    const map = L.map(el, {
-      center: [ch.lat, ch.lng],
-      zoom: 10,
-      zoomControl: false,
-      dragging: false,
-      scrollWheelZoom: false,
-      doubleClickZoom: false,
-      boxZoom: false,
-      keyboard: false,
-      touchZoom: false,
-      attributionControl: false
-    });
-    L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
-      maxZoom: 14
-    }).addTo(map);
-    const icon = L.divIcon({
-      className: "",
-      html: `<div class="stamp-marker stamp-marker--small">${ch.destination.slice(0, 1)}</div>`,
-      iconSize: [30, 30],
-      iconAnchor: [15, 15]
-    });
-    L.marker([ch.lat, ch.lng], { icon }).addTo(map);
-  });
+    try {
+      const map = L.map(el, {
+        center: [ch.lat, ch.lng],
+        zoom: 10,
+        zoomControl: false,
+        dragging: false,
+        scrollWheelZoom: false,
+        doubleClickZoom: false,
+        boxZoom: false,
+        keyboard: false,
+        touchZoom: false,
+        attributionControl: false
+      });
+      L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
+        maxZoom: 14
+      }).addTo(map);
+      const icon = L.divIcon({
+        className: "",
+        html: `<div class="stamp-marker stamp-marker--small">${ch.destination.slice(0, 1)}</div>`,
+        iconSize: [30, 30],
+        iconAnchor: [15, 15]
+      });
+      L.marker([ch.lat, ch.lng], { icon }).addTo(map);
+      initializedMaps.add(ch.id);
+      requestAnimationFrame(() => map.invalidateSize());
+    } catch (err) {
+      // A locator map failing to render should never break navigation.
+      console.warn("Locator map failed to initialize:", ch.id, err);
+    }
+  }
 
   // ---------- NAVIGATION LOGIC ----------
   function scrollToChapter(i) {
@@ -150,6 +159,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const el = document.getElementById(`chapter-${ch.id}`);
     if (el) el.hidden = false;
     if (i > unlockedUpTo) unlockedUpTo = i;
+    initLocatorMap(ch);
     scrollToChapter(i);
   }
 
