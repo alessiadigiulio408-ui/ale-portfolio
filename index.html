@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alessia Di Giulio — A Journey in Stamps</title>
+<meta name="description" content="Alessia Di Giulio's career and education journey, mapped from Caracas to Boston to Milan to Miami.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Work+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- COVER -->
+<section class="cover" id="cover">
+  <div class="cover-frame">
+    <p class="cover-eyebrow">Passport No. 2026 · Marketing &amp; Social Media</p>
+    <h1 class="cover-name">Alessia<br>Di Giulio</h1>
+    <p class="cover-route">Caracas → Waltham → Milan → Miami</p>
+    <a href="#map-section" class="cover-cta">Open Passport <span class="arrow">↓</span></a>
+  </div>
+  <div class="cover-border" aria-hidden="true"></div>
+</section>
+
+<!-- INTRO STRIP -->
+<section class="intro">
+  <p><span class="intro-mark">✎</span> Every pin below is a stamp in the story — from where I grew up, to where I studied, to where I work now. Tap a stamp to open that page.</p>
+</section>
+
+<!-- MAP -->
+<section class="map-section" id="map-section">
+  <div id="journey-map"></div>
+</section>
+
+<!-- REMOTE / FREELANCE NOTE -->
+<section class="postcard-section">
+  <div class="postcard">
+    <div class="postcard-stamp">✉</div>
+    <div class="postcard-body">
+      <p class="postcard-kicker">No fixed address — worked from wherever I was</p>
+      <h3>Freelance Marketing &amp; Editorial Contributor</h3>
+      <p class="postcard-org">Maison Pearl · Remote · Jan 2025 – Jan 2026</p>
+      <p class="postcard-text">Wrote editorial and promotional content for product launches, including features in Elty Magazine, and localized marketing materials into Spanish for Hispanic audiences while keeping brand consistency.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <p class="footer-name">Alessia Di Giulio</p>
+  <p class="footer-links">
+    <a href="https://www.linkedin.com/in/alessia-maria-di-giulio-76499a238" target="_blank" rel="noopener">LinkedIn</a>
+    <span aria-hidden="true">·</span>
+    <a href="mailto:alessiadigiulio408@gmail.com">Email</a>
+  </p>
+  <p class="footer-tag">Aventura, FL — Bilingual · Spanish (Native) / English (Fluent)</p>
+</footer>
+
+<!-- MODAL: PASSPORT PAGE -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="passport-page" id="passport-page" role="dialog" aria-modal="true" aria-labelledby="modal-city-title">
+    <button class="modal-close" id="modal-close" aria-label="Close">✕</button>
+    <div class="passport-page-inner" id="passport-page-inner">
+      <!-- injected by script.js -->
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="data.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
