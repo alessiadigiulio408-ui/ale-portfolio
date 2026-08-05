@@ -13,7 +13,7 @@ const journeyChapters = [
     number: 1,
     kicker: "Chapter One",
     destination: "Caracas, Venezuela",
-    title: "Where the Story Begins",
+    title: "Where It All Began",
     lat: 10.4806,
     lng: -66.9036,
     entries: [
@@ -21,7 +21,10 @@ const journeyChapters = [
         dateLabel: "Roots",
         role: "Childhood & Early Education",
         org: "",
-        text: "Where the story starts — early schooling and the years that shaped my love of language, culture, and connecting with people.",
+        text: `<p class="entry-question">Who was I?</p>
+<p>I grew up in Caracas, Venezuela, where I developed a curiosity for both creativity and analytical thinking. In school, I found myself equally drawn to mathematics and art, never realizing those two interests would eventually lead me toward the same path.</p>
+<p>Beyond the classroom, I dreamed of exploring the world. As graduation approached, I left home with one question:</p>
+<p class="entry-question">What was I meant to create?</p>`,
         photos: ["caracas-roots-1.jpg", "caracas-roots-2.jpg"]
       }
     ]

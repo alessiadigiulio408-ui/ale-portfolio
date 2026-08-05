@@ -327,6 +327,16 @@ button{ font-family:inherit; }
 .entry-role{ font-family:var(--display); font-weight:600; font-size:1.25rem; margin:0 0 0.1rem; color:var(--ink); }
 .entry-org{ font-family:var(--body); font-weight:500; font-size:0.9rem; color:var(--ink-soft); margin:0 0 0.7rem; }
 .entry-text{ font-size:0.96rem; line-height:1.65; margin:0 0 1.1rem; color:var(--charcoal); }
+.entry-text p{ margin:0 0 1rem; }
+.entry-text p:last-child{ margin-bottom:0; }
+.entry-question{
+  font-family:var(--display);
+  font-style:italic;
+  font-weight:500;
+  font-size:1.15rem;
+  color:var(--stamp);
+  margin:0 0 1.1rem;
+}
 
 /* Polaroid photo grid */
 .photo-grid{

@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <span class="entry-date">${entry.dateLabel}</span>
         <h3 class="entry-role">${entry.role}</h3>
         ${entry.org ? `<p class="entry-org">${entry.org}</p>` : ""}
-        <p class="entry-text">${entry.text}</p>
+        <div class="entry-text">${entry.text}</div>
         <div class="photo-grid">${entry.photos.map(photoFilename).join("")}</div>
       </div>
     `;
