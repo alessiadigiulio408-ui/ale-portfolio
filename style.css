@@ -88,61 +88,187 @@ button{ font-family:inherit; }
 }
 .nav-stamp:disabled{ opacity:0.45; }
 
-/* ===== COVER ===== */
-.cover{
-  position:relative;
+/* ===== PASSPORT COVER (3D book) ===== */
+.passport-intro{
   min-height:100svh;
-  background:
-    radial-gradient(circle at 20% 15%, rgba(201,169,104,0.10), transparent 45%),
-    radial-gradient(circle at 85% 80%, rgba(156,59,44,0.12), transparent 50%),
-    linear-gradient(180deg, var(--ink) 0%, #16223A 100%);
-  color:var(--paper);
   display:flex;
   align-items:center;
   justify-content:center;
-  overflow:hidden;
-  padding-top:3rem;
+  background:
+    radial-gradient(circle at 20% 15%, rgba(201,169,104,0.10), transparent 45%),
+    radial-gradient(circle at 85% 80%, rgba(156,59,44,0.12), transparent 50%),
+    linear-gradient(180deg, var(--ink) 0%, #0F1826 100%);
+  padding:2.5rem 1.25rem;
 }
-.cover-border{
+
+.passport-book{
+  position:relative;
+  width:min(380px, 88vw);
+  aspect-ratio:5/7;
+  perspective:1800px;
+}
+
+/* ---- Data page (revealed underneath) ---- */
+.passport-page-data{
   position:absolute;
-  inset:20px;
-  border:1px solid rgba(201,169,104,0.45);
+  inset:0;
+  background:var(--paper);
+  border-radius:8px;
+  box-shadow:0 30px 70px -20px rgba(0,0,0,0.55);
+  overflow-y:auto;
+  z-index:1;
+}
+.data-page-inner{
+  padding:1.75rem 1.5rem 1.5rem;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+}
+.headshot-frame{
+  width:88px;
+  height:88px;
+  border-radius:50%;
+  border:2px solid var(--brass);
+  overflow:hidden;
+  margin-bottom:0.85rem;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--paper-dark);
+}
+.headshot-frame img{ width:100%; height:100%; object-fit:cover; }
+.headshot-frame.is-empty::after{
+  content:"+ photo";
+  font-family:var(--mono);
+  font-size:0.7rem;
+  color:var(--ink-soft);
+}
+.data-tagline{
+  font-family:var(--body);
+  font-style:italic;
+  font-size:0.8rem;
+  line-height:1.5;
+  color:var(--ink-soft);
+  max-width:280px;
+  margin:0 0 1.1rem;
+}
+.data-label{
+  font-family:var(--mono);
+  font-size:0.65rem;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:var(--brass);
+  margin:0.7rem 0 0.15rem;
+}
+.data-name{
+  font-family:var(--display);
+  font-weight:600;
+  font-size:1.35rem;
+  color:var(--ink);
+  margin:0;
+}
+.data-value{
+  font-family:var(--body);
+  font-size:0.88rem;
+  color:var(--charcoal);
+  margin:0;
+}
+.skill-pills{
+  display:flex;
+  flex-wrap:wrap;
+  gap:0.4rem;
+  justify-content:center;
+  margin:0.8rem 0 0.2rem;
+}
+.pill{
+  font-family:var(--mono);
+  font-size:0.66rem;
+  letter-spacing:0.02em;
+  color:var(--ink);
+  background:var(--paper-dark);
+  border:1px solid rgba(27,42,65,0.2);
+  padding:0.28rem 0.65rem;
+  border-radius:999px;
+}
+.signature{
+  font-family:var(--hand);
+  font-size:1.7rem;
+  color:var(--ink);
+  margin:1rem 0 1.1rem;
+  transform:rotate(-2deg);
+}
+.mrz-line{
+  font-family:var(--mono);
+  font-size:0.6rem;
+  letter-spacing:0.05em;
+  line-height:1.6;
+  color:var(--ink-soft);
+  background:var(--paper-dark);
+  border-radius:3px;
+  padding:0.55rem 0.6rem;
+  margin-top:1.2rem;
+  width:100%;
+}
+
+/* ---- Closed cover (rotates open) ---- */
+.passport-cover{
+  position:absolute;
+  inset:0;
+  z-index:2;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:1rem;
+  padding:2rem;
+  border:none;
+  border-radius:8px;
+  background:linear-gradient(160deg, var(--ink) 0%, #10192B 100%);
+  box-shadow:0 25px 60px -18px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(201,169,104,0.35);
+  color:var(--paper);
+  cursor:pointer;
+  transform-origin:left center;
+  backface-visibility:hidden;
+  transition:transform 0.9s ease;
+  font-family:inherit;
+}
+.passport-cover.is-open{
+  transform:rotateY(-100deg);
   pointer-events:none;
 }
-.cover-border::before{
-  content:"";
-  position:absolute;
-  inset:8px;
-  border:1px solid rgba(201,169,104,0.25);
-}
-.cover-frame{
-  text-align:center;
-  padding:2rem;
-  max-width:600px;
-}
+.cover-emblem{ color:var(--brass-light); }
 .cover-eyebrow{
   font-family:var(--mono);
-  font-size:0.75rem;
-  letter-spacing:0.18em;
+  font-size:0.66rem;
+  letter-spacing:0.14em;
   text-transform:uppercase;
   color:var(--brass-light);
-  margin:0 0 1.75rem;
+  margin:0;
+  text-align:center;
 }
 .cover-name{
   font-family:var(--display);
   font-weight:600;
-  font-size:clamp(2.75rem, 8vw, 5rem);
-  line-height:1.02;
-  margin:0 0 1.5rem;
+  font-size:clamp(1.9rem, 8vw, 2.6rem);
+  line-height:1.05;
+  margin:0;
+  text-align:center;
   letter-spacing:-0.01em;
 }
-.cover-tagline{
+.cover-tap-hint{
   font-family:var(--body);
-  font-size:1rem;
-  line-height:1.6;
-  color:rgba(241,234,217,0.8);
-  margin:0 0 2.5rem;
+  font-size:0.8rem;
+  color:rgba(241,234,217,0.7);
+  margin:0.5rem 0 0;
+  animation:tapPulse 2.2s ease-in-out infinite;
 }
+@keyframes tapPulse{
+  0%, 100%{ opacity:0.55; }
+  50%{ opacity:1; }
+}
+
+/* ---- Begin Journey button (now on the data page) ---- */
 .cover-cta{
   display:inline-flex;
   align-items:center;
@@ -151,15 +277,15 @@ button{ font-family:inherit; }
   text-decoration:none;
   font-family:var(--body);
   font-weight:600;
-  font-size:0.95rem;
-  color:var(--ink);
-  background:var(--brass-light);
-  padding:0.85rem 1.6rem;
+  font-size:0.9rem;
+  color:var(--white);
+  background:var(--stamp);
+  padding:0.75rem 1.5rem;
   border-radius:999px;
   cursor:pointer;
   transition:transform 0.25s ease, background 0.25s ease;
 }
-.cover-cta:hover{ background:var(--paper); transform:translateY(-2px); }
+.cover-cta:hover{ background:#7d2f22; transform:translateY(-2px); }
 .cover-cta .arrow{ transition:transform 0.25s ease; }
 .cover-cta:hover .arrow{ transform:translateX(3px); }
 

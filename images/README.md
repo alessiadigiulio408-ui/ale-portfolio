@@ -5,6 +5,9 @@ Any chapter you don't have a photo for yet will just show a "+ photo" placeholde
 
 Square-ish photos (close to 1:1) look best, since they display like Polaroids.
 
+## Passport data page — your headshot
+- profile-headshot.jpg (square, close-up works best — shows in the circular frame)
+
 ## Caracas — Roots (Childhood & Early Education)
 - caracas-roots-1.jpg
 - caracas-roots-2.jpg

@@ -19,15 +19,59 @@
 <!-- PROGRESS STAMPS (fixed) -->
 <nav class="progress-nav" id="progress-nav" aria-label="Journey progress"></nav>
 
-<!-- COVER -->
-<section class="cover" id="cover">
-  <div class="cover-frame">
-    <p class="cover-eyebrow">Passport No. 2026 · Marketing &amp; Social Media</p>
-    <h1 class="cover-name">Alessia<br>Di Giulio</h1>
-    <p class="cover-tagline" id="cover-tagline"></p>
-    <button class="cover-cta" id="begin-journey">Begin the Journey <span class="arrow">→</span></button>
+<!-- COVER: closed passport that opens like a book -->
+<section class="passport-intro" id="cover">
+  <div class="passport-book" id="passport-book">
+
+    <!-- DATA PAGE (revealed underneath) -->
+    <div class="passport-page-data">
+      <div class="data-page-inner">
+        <div class="headshot-frame" id="headshot-frame">
+          <img id="headshot-img" src="images/profile-headshot.jpg" alt=""
+               onerror="this.closest('.headshot-frame').classList.add('is-empty'); this.remove();">
+        </div>
+
+        <p class="data-tagline" id="cover-tagline"></p>
+
+        <p class="data-label">Full Name</p>
+        <h2 class="data-name">Alessia Di Giulio</h2>
+
+        <p class="data-label">Field of Study</p>
+        <p class="data-value">B.S. Marketing · Minor in Economics</p>
+
+        <div class="skill-pills">
+          <span class="pill">Social Media Strategy</span>
+          <span class="pill">Paid Social Advertising</span>
+          <span class="pill">Content Marketing</span>
+        </div>
+
+        <p class="data-label">Authority</p>
+        <p class="data-value">Social Media Coordinator, Prime Group</p>
+
+        <p class="signature">Alessia Di Giulio</p>
+
+        <button class="cover-cta" id="begin-journey">Begin the Journey <span class="arrow">→</span></button>
+
+        <p class="mrz-line">P&lt;VENDIGIULIO&lt;&lt;ALESSIA&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;<br>A1234567&lt;8VEN0000000F0000000&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;06</p>
+      </div>
+    </div>
+
+    <!-- CLOSED COVER (on top, rotates open) -->
+    <button class="passport-cover" id="passport-cover" aria-label="Open passport">
+      <div class="cover-emblem" aria-hidden="true">
+        <svg viewBox="0 0 100 100" width="72" height="72">
+          <circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" stroke-width="2"/>
+          <circle cx="50" cy="50" r="38" fill="none" stroke="currentColor" stroke-width="1"/>
+          <path d="M50 30 C 40 42, 20 44, 12 40 C 22 52, 36 56, 48 54 L 50 66 L 52 54 C 64 56, 78 52, 88 40 C 80 44, 60 42, 50 30 Z" fill="currentColor"/>
+          <circle cx="50" cy="30" r="3.5" fill="currentColor"/>
+        </svg>
+      </div>
+      <p class="cover-eyebrow">Passport · Marketing &amp; Social Media</p>
+      <h1 class="cover-name">Alessia<br>Di Giulio</h1>
+      <p class="cover-tap-hint">Tap to open</p>
+    </button>
+
   </div>
-  <div class="cover-border" aria-hidden="true"></div>
 </section>
 
 <!-- FLIGHT MAP -->
@@ -48,7 +92,7 @@
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="data.js?v=6"></script>
-<script src="script.js?v=7"></script>
+<script src="data.js?v=7"></script>
+<script src="script.js?v=8"></script>
 </body>
 </html>

@@ -301,6 +301,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 450);
   }
 
+  const passportCover = document.getElementById("passport-cover");
+  passportCover.addEventListener("click", () => {
+    passportCover.classList.add("is-open");
+  });
+
   document.getElementById("begin-journey").addEventListener("click", () => {
     document.getElementById("flight-dock").hidden = false;
     advanceJourney();
