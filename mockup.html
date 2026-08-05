@@ -281,6 +281,19 @@
   }
 
   /* ===== ACCOUNTS LIST (Work) & CERTIFICATES (About) ===== */
+  /* ===== WORK CATEGORIES (Hospitality / Retail) ===== */
+  .work-category{ margin-bottom:3rem; }
+  .work-category:last-of-type{ margin-bottom:0; }
+  .work-category-label{
+    font-family:var(--display);
+    font-weight:500;
+    font-size:1.15rem;
+    color:var(--ink);
+    margin:0 0 1.1rem;
+    padding-bottom:0.6rem;
+    border-bottom:1px solid var(--paper-line);
+  }
+
   .accounts-block, .certs-block{
     margin-top:2.75rem;
     padding-top:1.75rem;
@@ -387,22 +400,38 @@
     <h2 class="section-title">Campaigns &amp; content</h2>
     <p class="section-sub">A selection of social content and campaigns across the brands I manage.</p>
   </div>
-  <div class="grid">
-    <div class="grid-item">
-      <img src="images/work/hilton-gazebo.jpg" alt="">
-      <span class="grid-caption">Hilton — lifestyle photography</span>
+
+  <div class="work-category">
+    <p class="work-category-label">Hospitality</p>
+    <div class="grid">
+      <div class="grid-item">
+        <img src="images/work/hilton-gazebo.jpg" alt="">
+        <span class="grid-caption">Hilton — lifestyle photography</span>
+      </div>
+      <div class="grid-item">
+        <img src="images/work/hilton-lawn.jpg" alt="">
+        <span class="grid-caption">Hilton — property photography</span>
+      </div>
+      <div class="grid-item">
+        <img src="images/work/hilton-plate.jpg" alt="">
+        <span class="grid-caption">Hilton — F&amp;B photography</span>
+      </div>
+      <div class="grid-item is-empty">+ example</div>
+      <div class="grid-item is-empty">+ example</div>
+      <div class="grid-item is-empty">+ video</div>
     </div>
-    <div class="grid-item">
-      <img src="images/work/hilton-lawn.jpg" alt="">
-      <span class="grid-caption">Hilton — property photography</span>
+  </div>
+
+  <div class="work-category">
+    <p class="work-category-label">Retail</p>
+    <div class="grid">
+      <div class="grid-item">
+        <img src="images/creative-direction/the-label-shoot.jpg" alt="">
+        <span class="grid-caption">The Label — campaign photography</span>
+      </div>
+      <div class="grid-item is-empty">+ example</div>
+      <div class="grid-item is-empty">+ example</div>
     </div>
-    <div class="grid-item">
-      <img src="images/work/hilton-plate.jpg" alt="">
-      <span class="grid-caption">Hilton — F&amp;B photography</span>
-    </div>
-    <div class="grid-item is-empty">+ example</div>
-    <div class="grid-item is-empty">+ example</div>
-    <div class="grid-item is-empty">+ video</div>
   </div>
 
   <div class="accounts-block">
