@@ -293,6 +293,12 @@
     padding-bottom:0.6rem;
     border-bottom:1px solid var(--paper-line);
   }
+  .work-category-sub{
+    font-size:0.86rem;
+    color:var(--gray);
+    margin:0 0 1.1rem;
+  }
+  .work-category-label + .work-category-sub{ margin-top:-0.6rem; }
 
   .accounts-block, .certs-block{
     margin-top:2.75rem;
@@ -451,20 +457,30 @@
     <h2 class="section-title">Photoshoots I've directed</h2>
     <p class="section-sub">Concept, wardrobe, and styling — whether I'm behind the camera or directing someone who is.</p>
   </div>
-  <div class="grid">
-    <div class="grid-item">
-      <img src="images/work/hilton-gazebo.jpg" alt="">
-      <span class="grid-caption">Hilton — styling &amp; direction</span>
+
+  <div class="work-category">
+    <p class="work-category-label">For Clients</p>
+    <div class="grid">
+      <div class="grid-item">
+        <img src="images/work/hilton-gazebo.jpg" alt="">
+        <span class="grid-caption">Hilton — styling &amp; direction</span>
+      </div>
+      <div class="grid-item">
+        <img src="images/creative-direction/eclat-disque.jpg" alt="">
+        <span class="grid-caption">Éclat Disque — styling &amp; direction</span>
+      </div>
+      <div class="grid-item is-empty">+ video</div>
     </div>
-    <div class="grid-item">
-      <img src="images/creative-direction/eclat-disque.jpg" alt="">
-      <span class="grid-caption">Éclat Disque — styling &amp; direction</span>
+  </div>
+
+  <div class="work-category">
+    <p class="work-category-label">Personal</p>
+    <p class="work-category-sub">Reels and photos I've taken just because I liked them.</p>
+    <div class="grid">
+      <div class="grid-item is-empty">+ photo</div>
+      <div class="grid-item is-empty">+ reel</div>
+      <div class="grid-item is-empty">+ photo</div>
     </div>
-    <div class="grid-item">
-      <img src="images/creative-direction/the-label-shoot.jpg" alt="">
-      <span class="grid-caption">The Label — styling &amp; direction</span>
-    </div>
-    <div class="grid-item is-empty">+ video</div>
   </div>
 </section>
 
