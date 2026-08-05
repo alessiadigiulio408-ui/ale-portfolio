@@ -37,23 +37,32 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ---------- CHAPTER CONTENT HELPERS ----------
-  function photoFilename(name) {
+  function photoFilename(name, annotation) {
     return `
       <div class="polaroid">
-        <img src="images/${name}" alt="" loading="lazy"
-             onerror="this.parentElement.innerHTML='<div class=&quot;polaroid-placeholder&quot;>+ photo</div>'">
+        <div class="polaroid-photo-wrap">
+          <img src="images/${name}" alt="" loading="lazy"
+               onerror="this.parentElement.innerHTML='<div class=&quot;polaroid-placeholder&quot;>+ photo</div>'">
+          ${annotation ? `
+            <div class="photo-annotation" style="left:${annotation.left}; top:${annotation.top};">
+              <span class="annotation-text">${annotation.text}</span>
+              <span class="annotation-arrow">${annotation.arrow || "↓"}</span>
+            </div>
+          ` : ""}
+        </div>
       </div>
     `;
   }
 
   function entryHtml(entry) {
+    const annotations = entry.photoAnnotations || {};
     return `
       <div class="entry">
         <span class="entry-date">${entry.dateLabel}</span>
         <h3 class="entry-role">${entry.role}</h3>
         ${entry.org ? `<p class="entry-org">${entry.org}</p>` : ""}
         <div class="entry-text">${entry.text}</div>
-        <div class="photo-grid">${entry.photos.map(photoFilename).join("")}</div>
+        <div class="photo-grid">${entry.photos.map((p) => photoFilename(p, annotations[p])).join("")}</div>
       </div>
     `;
   }

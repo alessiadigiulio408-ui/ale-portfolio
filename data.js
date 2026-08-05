@@ -25,7 +25,10 @@ const journeyChapters = [
 <p>I grew up in Caracas, Venezuela, where I developed a curiosity for both creativity and analytical thinking. In school, I found myself equally drawn to mathematics and art, never realizing those two interests would eventually lead me toward the same path.</p>
 <p>Beyond the classroom, I dreamed of exploring the world. I knew I'd eventually leave Venezuela to see what else was out there — and that pull is what pushed me to do everything in my power to make it to Boston. As graduation approached, I left home with one question:</p>
 <p class="entry-question">What was I meant to create?</p>`,
-        photos: ["caracas-roots-1.jpg", "caracas-roots-2.jpg"]
+        photos: ["caracas-roots-1.jpg", "caracas-roots-2.jpg"],
+        photoAnnotations: {
+          "caracas-roots-1.jpg": { text: "Alessia", left: "37%", top: "38%", arrow: "↓" }
+        }
       }
     ]
   },

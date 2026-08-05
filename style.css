@@ -352,12 +352,37 @@ button{ font-family:inherit; }
   transform:rotate(var(--tilt, -1.5deg));
 }
 .polaroid:nth-child(2n){ --tilt:1.5deg; }
+.polaroid-photo-wrap{ position:relative; }
 .polaroid img{
   display:block;
   width:100%;
   aspect-ratio:1/1;
   object-fit:cover;
   border-radius:1px;
+}
+.photo-annotation{
+  position:absolute;
+  transform:translate(-50%, -100%);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  pointer-events:none;
+  filter:drop-shadow(0 1px 2px rgba(0,0,0,0.35));
+}
+.annotation-text{
+  font-family:var(--hand);
+  font-weight:600;
+  font-size:1.5rem;
+  color:var(--white);
+  white-space:nowrap;
+  transform:rotate(-4deg);
+  line-height:1;
+}
+.annotation-arrow{
+  font-size:1.2rem;
+  color:var(--white);
+  line-height:1;
+  margin-top:2px;
 }
 .polaroid-placeholder{
   width:100%;
