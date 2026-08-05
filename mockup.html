@@ -218,6 +218,34 @@
     border-radius:999px;
   }
 
+  /* ===== ACCOUNTS LIST (Work) & CERTIFICATES (About) ===== */
+  .accounts-block, .certs-block{
+    margin-top:2.75rem;
+    padding-top:1.75rem;
+    border-top:1px solid var(--paper-line);
+  }
+  .accounts-label, .certs-label{
+    font-size:0.78rem;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin:0 0 0.9rem;
+  }
+  .accounts-list, .certs-list{
+    list-style:none;
+    margin:0;
+    padding:0;
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(200px, 1fr));
+    gap:0.5rem 1.5rem;
+  }
+  .accounts-list li, .certs-list li{
+    font-size:0.95rem;
+    color:var(--ink);
+    padding:0.6rem 0;
+    border-bottom:1px solid var(--paper-line);
+  }
+
   /* ===== CONTACT ===== */
   .contact{ text-align:center; padding-bottom:7rem; }
   .contact-title{
@@ -277,8 +305,9 @@
   <span class="nav-name"><a href="#home" data-view-link="home">Alessia Di Giulio</a></span>
   <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">☰</button>
   <ul class="nav-links" id="nav-links">
-    <li><a href="#photography" data-view-link="photography">Photography</a></li>
-    <li><a href="#ai-creations" data-view-link="ai-creations">AI Creations</a></li>
+    <li><a href="#work" data-view-link="work">Work</a></li>
+    <li><a href="#creative-direction" data-view-link="creative-direction">Creative Direction</a></li>
+    <li><a href="#illustrations" data-view-link="illustrations">Illustrations</a></li>
     <li><a href="#about" data-view-link="about">About</a></li>
     <li><a href="#contact" data-view-link="contact">Contact</a></li>
   </ul>
@@ -290,18 +319,39 @@
   <p class="hero-tagline">Social Media Coordinator at Prime Group, bilingual content creator, and a lifelong collector of good photos and small creative experiments.</p>
 </header>
 
-<section id="photography" class="view">
+<section id="work" class="view">
   <div class="section-head">
-    <p class="section-label">Photography</p>
-    <h2 class="section-title">Pictures I've taken</h2>
-    <p class="section-sub">A mix of personal and travel photography — real moments, unfiltered.</p>
+    <p class="section-label">Work</p>
+    <h2 class="section-title">Campaigns &amp; content</h2>
+    <p class="section-sub">A selection of social content and campaigns across the brands I manage.</p>
   </div>
   <div class="grid">
-    <div class="grid-item">
-      <img src="images/caracas-roots-1.jpg" alt="">
-      <span class="grid-caption">Caracas, Venezuela</span>
-    </div>
-    <div class="grid-item is-empty">+ photo</div>
+    <div class="grid-item is-empty">+ example</div>
+    <div class="grid-item is-empty">+ example</div>
+    <div class="grid-item is-empty">+ example</div>
+    <div class="grid-item is-empty">+ example</div>
+    <div class="grid-item is-empty">+ example</div>
+    <div class="grid-item is-empty">+ example</div>
+  </div>
+
+  <div class="accounts-block">
+    <p class="accounts-label">Accounts I manage &amp; have managed</p>
+    <ul class="accounts-list">
+      <li>+ add account</li>
+      <li>+ add account</li>
+      <li>+ add account</li>
+      <li>+ add account</li>
+    </ul>
+  </div>
+</section>
+
+<section id="creative-direction" class="view">
+  <div class="section-head">
+    <p class="section-label">Creative Direction</p>
+    <h2 class="section-title">Photoshoots I've directed</h2>
+    <p class="section-sub">Concept, wardrobe, and styling — whether I'm behind the camera or directing someone who is.</p>
+  </div>
+  <div class="grid">
     <div class="grid-item is-empty">+ photo</div>
     <div class="grid-item is-empty">+ photo</div>
     <div class="grid-item is-empty">+ photo</div>
@@ -309,11 +359,11 @@
   </div>
 </section>
 
-<section id="ai-creations" class="view">
+<section id="illustrations" class="view">
   <div class="section-head">
-    <p class="section-label">AI Creations</p>
+    <p class="section-label">Illustrations</p>
     <h2 class="section-title">Things I've made with AI</h2>
-    <p class="section-sub">Illustrations and experiments — a look at how I use AI tools creatively.</p>
+    <p class="section-sub">Illustration and creative experiments — a look at how I use AI tools creatively.</p>
   </div>
   <div class="grid">
     <div class="grid-item">
@@ -336,12 +386,21 @@
     <div class="about-text">
       <p>I'm a bilingual marketing and social media professional currently working as Social Media Coordinator at Prime Group, where I manage content, paid ads, and event marketing across 15+ hospitality and real estate properties.</p>
       <p>My path took me from Caracas to Boston, where I studied Marketing with a minor in Economics at Bentley University, to a semester abroad in Milan, and now to Florida — a mix of places and experiences that shaped how I think about brands, culture, and connection.</p>
-      <p>Outside of work, I take photos, experiment with AI-generated art, and I'm always looking for the next creative project.</p>
+      <p>Beyond the day-to-day, I love directing creative shoots and experimenting with illustration — always looking for the next creative project.</p>
       <div class="about-facts">
         <span class="fact-pill">Social Media Strategy</span>
         <span class="fact-pill">Paid Social Advertising</span>
         <span class="fact-pill">Content Marketing</span>
         <span class="fact-pill">Bilingual — Spanish / English</span>
+      </div>
+
+      <div class="certs-block">
+        <p class="certs-label">Certificates</p>
+        <ul class="certs-list">
+          <li>+ add certificate</li>
+          <li>+ add certificate</li>
+          <li>+ add certificate</li>
+        </ul>
       </div>
     </div>
   </div>
