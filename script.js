@@ -101,7 +101,7 @@ document.addEventListener("DOMContentLoaded", () => {
             ${ch.rightIntro ? `<div class="text-panel text-panel--right"><div class="spread-intro spread-intro--right">${ch.rightIntro}</div></div>` : ""}
             ${ch.rightPhotos && ch.rightPhotos.length ? `<div class="spread-photos ${ch.rightPhotosClass || ""}">${ch.rightPhotos.map(spreadPhotoHtml).join("")}</div>` : ""}
             ${ch.tornNote ? `<span class="torn-note">${ch.tornNote}</span>` : ""}
-            <button class="ticket-cta continue-btn" data-index="${i}">
+            <button class="ticket-cta" data-index="${i}">
               <span class="ticket-label">Continue the Journey</span>
               <span class="ticket-next">${ch.ctaNext || "Next Chapter"} <span class="arrow">→</span></span>
             </button>
@@ -390,7 +390,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("advance-btn").addEventListener("click", advanceJourney);
 
   root.addEventListener("click", (e) => {
-    const btn = e.target.closest(".continue-btn");
+    const btn = e.target.closest(".continue-btn, .ticket-cta");
     if (btn) {
       advanceJourney();
       return;
