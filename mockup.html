@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alessia Di Giulio — Portfolio (Mockup)</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --ink:#161513;
+    --paper:#FAF9F6;
+    --paper-line:rgba(22,21,19,0.1);
+    --accent:#8B5A3C;
+    --gray:#6B6963;
+    --display:'Fraunces', serif;
+    --body:'Work Sans', sans-serif;
+  }
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--body);
+    font-weight:400;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{ color:inherit; text-decoration:none; }
+  img{ display:block; max-width:100%; }
+
+  /* ===== NAV ===== */
+  .nav{
+    position:sticky;
+    top:0;
+    z-index:50;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:1.1rem 1.5rem;
+    background:rgba(250,249,246,0.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--paper-line);
+  }
+  .nav-name{
+    font-family:var(--display);
+    font-weight:600;
+    font-size:1.05rem;
+    letter-spacing:0.02em;
+  }
+  .nav-links{
+    display:flex;
+    gap:1.6rem;
+    list-style:none;
+    margin:0;
+    padding:0;
+    font-size:0.82rem;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+  }
+  .nav-links a{ opacity:0.75; transition:opacity 0.2s ease; }
+  .nav-links a:hover{ opacity:1; }
+  .nav-toggle{ display:none; background:none; border:none; font-size:1.4rem; cursor:pointer; color:var(--ink); }
+
+  /* ===== HERO ===== */
+  .hero{
+    min-height:78vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:4rem 1.5rem;
+  }
+  .hero-eyebrow{
+    font-size:0.78rem;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--gray);
+    margin:0 0 1.25rem;
+  }
+  .hero-name{
+    font-family:var(--display);
+    font-weight:500;
+    font-size:clamp(2.6rem, 8vw, 5.5rem);
+    line-height:1.02;
+    margin:0 0 1.25rem;
+    letter-spacing:-0.01em;
+  }
+  .hero-tagline{
+    font-size:clamp(1rem, 1.6vw, 1.2rem);
+    color:var(--gray);
+    max-width:520px;
+    line-height:1.55;
+    margin:0;
+  }
+
+  /* ===== SECTION SHELL ===== */
+  section{ padding:5rem 1.5rem; max-width:1200px; margin:0 auto; }
+  .section-head{ margin-bottom:2.5rem; }
+  .section-label{
+    font-size:0.78rem;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin:0 0 0.5rem;
+  }
+  .section-title{
+    font-family:var(--display);
+    font-weight:500;
+    font-size:clamp(1.8rem, 3.5vw, 2.6rem);
+    margin:0;
+  }
+  .section-sub{
+    font-size:0.98rem;
+    color:var(--gray);
+    max-width:520px;
+    margin:0.9rem 0 0;
+    line-height:1.6;
+  }
+
+  /* ===== IMAGE GRID (Photography / AI Creations) ===== */
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(260px, 1fr));
+    gap:1.1rem;
+  }
+  .grid-item{
+    position:relative;
+    aspect-ratio:4/5;
+    overflow:hidden;
+    background:#EDEAE3;
+  }
+  .grid-item img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    transition:transform 0.5s ease;
+  }
+  .grid-item:hover img{ transform:scale(1.04); }
+  .grid-item.is-empty{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--gray);
+    font-size:0.8rem;
+    letter-spacing:0.03em;
+    border:1px dashed var(--paper-line);
+  }
+  .grid-item .grid-caption{
+    position:absolute;
+    left:0; right:0; bottom:0;
+    padding:0.9rem 1rem;
+    font-size:0.78rem;
+    color:#fff;
+    background:linear-gradient(0deg, rgba(0,0,0,0.55), transparent);
+    opacity:0;
+    transition:opacity 0.25s ease;
+  }
+  .grid-item:hover .grid-caption{ opacity:1; }
+
+  /* ===== ABOUT ===== */
+  .about{
+    display:grid;
+    grid-template-columns:280px 1fr;
+    gap:3rem;
+    align-items:start;
+  }
+  .about-photo{
+    aspect-ratio:4/5;
+    background:#EDEAE3;
+    border:1px dashed var(--paper-line);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--gray);
+    font-size:0.8rem;
+    overflow:hidden;
+  }
+  .about-photo img{ width:100%; height:100%; object-fit:cover; }
+  .about-text p{
+    font-size:1.02rem;
+    line-height:1.7;
+    color:var(--ink);
+    margin:0 0 1.1rem;
+    max-width:60ch;
+  }
+  .about-facts{
+    display:flex;
+    flex-wrap:wrap;
+    gap:0.6rem;
+    margin-top:1.5rem;
+  }
+  .fact-pill{
+    font-size:0.76rem;
+    letter-spacing:0.02em;
+    color:var(--ink);
+    border:1px solid var(--paper-line);
+    padding:0.4rem 0.85rem;
+    border-radius:999px;
+  }
+
+  /* ===== CONTACT ===== */
+  .contact{ text-align:center; padding-bottom:7rem; }
+  .contact-title{
+    font-family:var(--display);
+    font-weight:500;
+    font-size:clamp(2rem, 5vw, 3.2rem);
+    margin:0 0 1.5rem;
+  }
+  .contact-links{
+    display:flex;
+    justify-content:center;
+    gap:1rem;
+    flex-wrap:wrap;
+  }
+  .contact-link{
+    font-size:0.95rem;
+    padding:0.85rem 1.7rem;
+    border:1px solid var(--ink);
+    border-radius:999px;
+    transition:all 0.2s ease;
+  }
+  .contact-link:hover{ background:var(--ink); color:var(--paper); }
+  .contact-link.primary{ background:var(--ink); color:var(--paper); }
+  .contact-link.primary:hover{ background:var(--accent); border-color:var(--accent); }
+
+  footer{
+    text-align:center;
+    padding:2rem 1.5rem;
+    font-size:0.76rem;
+    color:var(--gray);
+    border-top:1px solid var(--paper-line);
+  }
+
+  /* ===== MOBILE ===== */
+  @media (max-width:760px){
+    .nav-links{
+      position:fixed;
+      top:60px; left:0; right:0;
+      flex-direction:column;
+      background:var(--paper);
+      padding:1.5rem;
+      gap:1.2rem;
+      border-bottom:1px solid var(--paper-line);
+      display:none;
+    }
+    .nav-links.open{ display:flex; }
+    .nav-toggle{ display:block; }
+    .about{ grid-template-columns:1fr; }
+    .about-photo{ max-width:220px; }
+    section{ padding:3.5rem 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <span class="nav-name">Alessia Di Giulio</span>
+  <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">☰</button>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="#photography">Photography</a></li>
+    <li><a href="#ai-creations">AI Creations</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<header class="hero">
+  <p class="hero-eyebrow">Marketing &amp; Social Media · Caracas → Boston → Milan → Miami</p>
+  <h1 class="hero-name">Alessia<br>Di Giulio</h1>
+  <p class="hero-tagline">Social Media Coordinator at Prime Group, bilingual content creator, and a lifelong collector of good photos and small creative experiments.</p>
+</header>
+
+<section id="photography">
+  <div class="section-head">
+    <p class="section-label">Photography</p>
+    <h2 class="section-title">Pictures I've taken</h2>
+    <p class="section-sub">A mix of personal and travel photography — real moments, unfiltered.</p>
+  </div>
+  <div class="grid">
+    <div class="grid-item">
+      <img src="images/caracas-roots-1.jpg" alt="">
+      <span class="grid-caption">Caracas, Venezuela</span>
+    </div>
+    <div class="grid-item is-empty">+ photo</div>
+    <div class="grid-item is-empty">+ photo</div>
+    <div class="grid-item is-empty">+ photo</div>
+    <div class="grid-item is-empty">+ photo</div>
+    <div class="grid-item is-empty">+ photo</div>
+  </div>
+</section>
+
+<section id="ai-creations">
+  <div class="section-head">
+    <p class="section-label">AI Creations</p>
+    <h2 class="section-title">Things I've made with AI</h2>
+    <p class="section-sub">Illustrations and experiments — a look at how I use AI tools creatively.</p>
+  </div>
+  <div class="grid">
+    <div class="grid-item">
+      <img src="images/caracas-roots-2.jpg" alt="">
+      <span class="grid-caption">Koi pond painting</span>
+    </div>
+    <div class="grid-item is-empty">+ image</div>
+    <div class="grid-item is-empty">+ image</div>
+    <div class="grid-item is-empty">+ image</div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="section-head">
+    <p class="section-label">About</p>
+    <h2 class="section-title">A bit about me</h2>
+  </div>
+  <div class="about">
+    <div class="about-photo">+ photo</div>
+    <div class="about-text">
+      <p>I'm a bilingual marketing and social media professional currently working as Social Media Coordinator at Prime Group, where I manage content, paid ads, and event marketing across 15+ hospitality and real estate properties.</p>
+      <p>My path took me from Caracas to Boston, where I studied Marketing with a minor in Economics at Bentley University, to a semester abroad in Milan, and now to Florida — a mix of places and experiences that shaped how I think about brands, culture, and connection.</p>
+      <p>Outside of work, I take photos, experiment with AI-generated art, and I'm always looking for the next creative project.</p>
+      <div class="about-facts">
+        <span class="fact-pill">Social Media Strategy</span>
+        <span class="fact-pill">Paid Social Advertising</span>
+        <span class="fact-pill">Content Marketing</span>
+        <span class="fact-pill">Bilingual — Spanish / English</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="contact">
+  <p class="section-label" style="text-align:center;">Contact</p>
+  <h2 class="contact-title">Let's talk</h2>
+  <div class="contact-links">
+    <a class="contact-link primary" href="mailto:alessiadigiulio408@gmail.com">Email Me</a>
+    <a class="contact-link" href="https://www.linkedin.com/in/alessia-maria-di-giulio-76499a238" target="_blank" rel="noopener">LinkedIn</a>
+  </div>
+</section>
+
+<footer>Alessia Di Giulio © 2026</footer>
+
+<script>
+  document.getElementById('nav-toggle').addEventListener('click', () => {
+    document.getElementById('nav-links').classList.toggle('open');
+  });
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    a.addEventListener('click', () => document.getElementById('nav-links').classList.remove('open'));
+  });
+</script>
+</body>
+</html>
