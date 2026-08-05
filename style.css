@@ -470,6 +470,7 @@ button{ font-family:inherit; }
   overflow:hidden;
   background:var(--ink);
   border-bottom:none;
+  perspective:2400px;
 }
 
 .spread{
@@ -481,6 +482,29 @@ button{ font-family:inherit; }
   margin:0;
   box-shadow:0 40px 100px -30px rgba(0,0,0,0.65);
   overflow:hidden;
+  transform-style:preserve-3d;
+  will-change:transform, opacity;
+}
+
+/* Page-turn transition: current chapter turns away on its right edge,
+   next chapter turns open from the same edge, like flipping a book page. */
+.spread.page-turning-out{
+  transform-origin:right center;
+  transition:transform 0.5s cubic-bezier(0.4,0,0.2,1), opacity 0.5s ease;
+  transform:rotateY(-28deg) scale(0.96);
+  opacity:0;
+  box-shadow:-30px 20px 80px -30px rgba(0,0,0,0.7);
+}
+.spread.page-turning-in{
+  animation:pageTurnIn 0.55s cubic-bezier(0.2,0.8,0.3,1) forwards;
+}
+@keyframes pageTurnIn{
+  from{ transform:rotateY(26deg) scale(0.96); opacity:0; }
+  to{ transform:rotateY(0deg) scale(1); opacity:1; }
+}
+@media (prefers-reduced-motion: reduce){
+  .spread.page-turning-out{ transition:opacity 0.3s ease; transform:none; }
+  .spread.page-turning-in{ animation:none; opacity:1; }
 }
 
 .spread-page{

@@ -307,9 +307,35 @@ document.addEventListener("DOMContentLoaded", () => {
     if (i >= journeyChapters.length) return;
     const ch = journeyChapters[i];
     const el = document.getElementById(`chapter-${ch.id}`);
-    if (el) el.hidden = false;
+    if (el) {
+      el.hidden = false;
+      if (ch.template === "spread") {
+        const spreadEl = el.querySelector(".spread");
+        if (spreadEl) {
+          spreadEl.classList.remove("page-turning-out");
+          spreadEl.classList.add("page-turning-in");
+        }
+      }
+    }
     if (i > unlockedUpTo) unlockedUpTo = i;
     updateAdvanceButton();
+  }
+
+  // Turns the current chapter's page away (if it's a book spread) before
+  // advancing, so moving between chapters feels like turning a real page.
+  function pageTurnOutCurrent(callback) {
+    if (unlockedUpTo < 0) { callback(); return; }
+    const currentCh = journeyChapters[unlockedUpTo];
+    if (currentCh.template === "spread") {
+      const el = document.getElementById(`chapter-${currentCh.id}`);
+      const spreadEl = el && el.querySelector(".spread");
+      if (spreadEl) {
+        spreadEl.classList.add("page-turning-out");
+        setTimeout(callback, 480);
+        return;
+      }
+    }
+    callback();
   }
 
   function updateAdvanceButton() {
@@ -331,50 +357,52 @@ document.addEventListener("DOMContentLoaded", () => {
     if (nextIndex >= journeyChapters.length) return;
     const nextCh = journeyChapters[nextIndex];
 
-    if (nextCh.isFinal) {
-      revealChapter(nextIndex);
-      scrollToChapter(nextIndex);
-      return;
-    }
-
     flying = true;
     const advanceBtn = document.getElementById("advance-btn");
     advanceBtn.disabled = true;
-
     const finish = () => {
       flying = false;
       advanceBtn.disabled = false;
     };
 
-    const stopIndex = stops.indexOf(nextCh);
-    const from = stopIndex === 0
-      ? PHANTOM_START
-      : { lat: stops[stopIndex - 1].lat, lng: stops[stopIndex - 1].lng };
-    const to = { lat: nextCh.lat, lng: nextCh.lng };
-
-    try {
-      document.getElementById("flight-section").scrollIntoView({ behavior: "smooth", block: "center" });
-    } catch (err) {
-      console.warn("Scroll to map failed, continuing anyway:", err);
-    }
-
-    // Give the scroll a beat before starting the flight animation.
-    setTimeout(() => {
-      const land = () => {
-        updateMapMarkerStates(stopIndex + 1);
+    pageTurnOutCurrent(() => {
+      if (nextCh.isFinal) {
         revealChapter(nextIndex);
+        scrollToChapter(nextIndex);
         finish();
-        setTimeout(() => scrollToChapter(nextIndex), 350);
-      };
-      try {
-        flyPlaneTo(from, to, 1400, land);
-      } catch (err) {
-        // If the flight animation fails for any reason, never leave the
-        // journey stuck — reveal the chapter immediately instead.
-        console.warn("Flight animation failed, revealing chapter directly:", err);
-        land();
+        return;
       }
-    }, 450);
+
+      const stopIndex = stops.indexOf(nextCh);
+      const from = stopIndex === 0
+        ? PHANTOM_START
+        : { lat: stops[stopIndex - 1].lat, lng: stops[stopIndex - 1].lng };
+      const to = { lat: nextCh.lat, lng: nextCh.lng };
+
+      try {
+        document.getElementById("flight-section").scrollIntoView({ behavior: "smooth", block: "center" });
+      } catch (err) {
+        console.warn("Scroll to map failed, continuing anyway:", err);
+      }
+
+      // Give the scroll a beat before starting the flight animation.
+      setTimeout(() => {
+        const land = () => {
+          updateMapMarkerStates(stopIndex + 1);
+          revealChapter(nextIndex);
+          finish();
+          setTimeout(() => scrollToChapter(nextIndex), 350);
+        };
+        try {
+          flyPlaneTo(from, to, 1400, land);
+        } catch (err) {
+          // If the flight animation fails for any reason, never leave the
+          // journey stuck — reveal the chapter immediately instead.
+          console.warn("Flight animation failed, revealing chapter directly:", err);
+          land();
+        }
+      }, 450);
+    });
   }
 
   const passportCover = document.getElementById("passport-cover");
