@@ -97,8 +97,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 <span class="stamp-text">${ch.stamp}</span>
               </div>
             ` : ""}
-            ${ch.rightCaption ? `<p class="spread-caption">${ch.rightCaption}</p>` : ""}
-            ${ch.rightIntro ? `<div class="text-panel text-panel--right"><div class="spread-intro spread-intro--right">${ch.rightIntro}</div></div>` : ""}
+            ${(ch.rightCaption || ch.rightIntro) ? `
+              <div class="text-panel text-panel--right">
+                ${ch.rightCaption ? `<p class="spread-caption">${ch.rightCaption}</p>` : ""}
+                ${ch.rightIntro ? `<div class="spread-intro spread-intro--right">${ch.rightIntro}</div>` : ""}
+              </div>
+            ` : ""}
             ${ch.rightPhotos && ch.rightPhotos.length ? `<div class="spread-photos ${ch.rightPhotosClass || ""}">${ch.rightPhotos.map(spreadPhotoHtml).join("")}</div>` : ""}
             ${ch.tornNote ? `<span class="torn-note">${ch.tornNote}</span>` : ""}
             <button class="ticket-cta" data-index="${i}">

@@ -542,18 +542,18 @@ button{ font-family:inherit; }
   padding:clamp(1rem, 3.5vw, 2.25rem);
 }
 
-/* Editorial reading panel behind text — warm paper, not a generic card */
+/* Editorial reading panel — soft mounted-paper card, not a website box */
 .text-panel{
-  background:rgba(247,239,219,0.88);
-  backdrop-filter:blur(2px);
-  -webkit-backdrop-filter:blur(2px);
-  padding:clamp(18px, 2vw, 34px);
-  border:1px solid rgba(111,72,42,0.18);
-  box-shadow:0 8px 24px rgba(42,31,20,0.08);
-  border-radius:4px;
-  max-width:min(46ch, 88%);
+  background:rgba(245,237,222,0.93);
+  backdrop-filter:blur(3px);
+  -webkit-backdrop-filter:blur(3px);
+  padding:clamp(24px, 3.2vw, 44px);
+  border:1px solid rgba(120,95,70,0.12);
+  box-shadow:0 8px 24px rgba(40,30,20,0.08);
+  border-radius:14px;
+  max-width:min(48ch, 90%);
 }
-.text-panel--right{ max-width:min(42ch, 82%); }
+.text-panel--right{ max-width:min(44ch, 88%); }
 
 .spread-label{
   font-family:var(--mono);
@@ -636,7 +636,7 @@ button{ font-family:inherit; }
 .spread-photos.photos-center-lower{
   position:absolute;
   left:50%;
-  top:58%;
+  top:68%;
   transform:translate(-50%, -30%);
   margin:0;
   z-index:2;
@@ -644,7 +644,7 @@ button{ font-family:inherit; }
 .spread-photos.photos-center-mid{
   position:absolute;
   left:50%;
-  top:52%;
+  top:68%;
   transform:translate(-50%, -50%);
   margin:0;
   z-index:2;
@@ -729,10 +729,9 @@ button{ font-family:inherit; }
   font-family:var(--hand);
   font-size:1.3rem;
   color:var(--pen-ink);
-  transform:rotate(-1.5deg);
+  transform:rotate(-1deg);
   margin:0 0 0.9rem;
-  max-width:80%;
-  text-shadow:0 1px 3px rgba(251,244,230,0.6);
+  max-width:100%;
 }
 
 .torn-note{
@@ -796,8 +795,8 @@ button{ font-family:inherit; }
   .spread-page{ width:100%; height:auto; aspect-ratio:2/3; flex:none; }
   .text-panel{ max-width:92%; }
   .text-panel--right{ max-width:92%; }
-  .spread-photos.photos-center-lower{ top:62%; }
-  .spread-photos.photos-center-mid{ top:50%; }
+  .spread-photos.photos-center-lower{ top:70%; }
+  .spread-photos.photos-center-mid{ top:68%; }
   .photo-frame--primary{ width:clamp(110px, 31.5vw, 161px); }
   .photo-frame--secondary{ width:clamp(86px, 24vw, 125px); }
   .photo-frame--detail{ width:clamp(60px, 15vw, 90px); }
