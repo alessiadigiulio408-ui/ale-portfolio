@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alessia Di Giulio — A Journey in Stamps</title>
+<meta name="description" content="Alessia Di Giulio's career and education journey — an interactive digital travel journal.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Work+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+<link rel="stylesheet" href="style.css?v=18">
+</head>
+<body>
+
+<!-- PROGRESS STAMPS (fixed) -->
+<nav class="progress-nav" id="progress-nav" aria-label="Journey progress"></nav>
+
+<!-- COVER: closed passport that opens like a book -->
+<section class="passport-intro" id="cover">
+  <div class="passport-book" id="passport-book">
+
+    <!-- DATA PAGE (revealed underneath) -->
+    <div class="passport-page-data">
+      <div class="data-page-inner">
+
+        <svg class="deco-compass deco-compass--top" viewBox="0 0 60 60" aria-hidden="true">
+          <circle cx="30" cy="30" r="22" fill="none" stroke="currentColor" stroke-width="1"/>
+          <circle cx="30" cy="30" r="2" fill="currentColor"/>
+          <path d="M30 10 L30 16 M30 44 L30 50 M10 30 L16 30 M44 30 L50 30" stroke="currentColor" stroke-width="1"/>
+          <path d="M30 18 L34 30 L30 42 L26 30 Z" fill="none" stroke="currentColor" stroke-width="1"/>
+        </svg>
+
+        <div class="headshot-frame" id="headshot-frame">
+          <img id="headshot-img" src="images/profile-headshot.jpg" alt=""
+               onerror="this.closest('.headshot-frame').classList.add('is-empty'); this.remove();">
+        </div>
+
+        <p class="data-tagline" id="cover-tagline"></p>
+
+        <p class="data-label data-label--first">Full Name</p>
+        <h2 class="data-name">Alessia Di Giulio</h2>
+
+        <p class="data-label">Field of Study</p>
+        <p class="data-value">B.S. Marketing · Minor in Economics</p>
+
+        <div class="skill-pills">
+          <span class="pill">Social Media Strategy</span>
+          <span class="pill">Paid Social Advertising</span>
+          <span class="pill">Content Marketing</span>
+        </div>
+
+        <p class="data-label">Authority</p>
+        <p class="data-value">Social Media Coordinator, Prime Group</p>
+
+        <!-- Journey teaser (right-page style preview, stacked for mobile) -->
+        <div class="journey-teaser">
+          <p class="teaser-kicker">The Journey Continues</p>
+          <div class="teaser-route">
+            <span class="teaser-stamp">
+              <span class="teaser-stamp-city">CCS</span>
+              <span class="teaser-stamp-label">Caracas</span>
+            </span>
+            <span class="teaser-route-line" aria-hidden="true">
+              <svg viewBox="0 0 100 20" preserveAspectRatio="none">
+                <line x1="2" y1="10" x2="98" y2="10" stroke="currentColor" stroke-width="1" stroke-dasharray="3 4"/>
+              </svg>
+              <span class="teaser-plane">✈</span>
+            </span>
+            <span class="teaser-stamp">
+              <span class="teaser-stamp-city">BOS</span>
+              <span class="teaser-stamp-label">Boston</span>
+            </span>
+          </div>
+          <div class="ticket-card">
+            <span class="ticket-row"><span>From</span><strong>Caracas (CCS)</strong></span>
+            <span class="ticket-row"><span>To</span><strong>Boston (BOS)</strong></span>
+            <span class="ticket-row"><span>Chapter</span><strong>One</strong></span>
+          </div>
+        </div>
+
+        <button class="cover-cta" id="begin-journey">Begin the Journey <span class="arrow">→</span></button>
+
+        <p class="signature">Alessia Di Giulio</p>
+
+        <svg class="deco-palm" viewBox="0 0 60 40" aria-hidden="true">
+          <path d="M8 38 C 8 24, 14 14, 14 14" fill="none" stroke="currentColor" stroke-width="1"/>
+          <path d="M14 14 C 14 14, 4 12, 2 6" fill="none" stroke="currentColor" stroke-width="1"/>
+          <path d="M14 14 C 14 14, 8 6, 10 2" fill="none" stroke="currentColor" stroke-width="1"/>
+          <path d="M14 14 C 14 14, 22 8, 26 4" fill="none" stroke="currentColor" stroke-width="1"/>
+          <path d="M14 14 C 14 14, 24 14, 28 12" fill="none" stroke="currentColor" stroke-width="1"/>
+        </svg>
+
+        <p class="mrz-line">P&lt;VENDIGIULIO&lt;&lt;ALESSIA&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;<br>A1234567&lt;8VEN0000000F0000000&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;06</p>
+      </div>
+    </div>
+
+    <!-- CLOSED COVER (on top, rotates open) -->
+    <button class="passport-cover" id="passport-cover" aria-label="Open passport">
+      <div class="cover-frame-border" aria-hidden="true"></div>
+
+      <div class="cover-emblem" aria-hidden="true">
+        <svg viewBox="0 0 100 100" width="64" height="64">
+          <circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" stroke-width="1"/>
+          <circle cx="50" cy="50" r="34" fill="none" stroke="currentColor" stroke-width="0.75"/>
+          <path d="M50 22 L50 32 M50 68 L50 78 M22 50 L32 50 M68 50 L78 50" stroke="currentColor" stroke-width="1"/>
+          <path d="M50 30 L58 50 L50 70 L42 50 Z" fill="none" stroke="currentColor" stroke-width="1.25"/>
+          <circle cx="50" cy="50" r="3" fill="currentColor"/>
+        </svg>
+      </div>
+
+      <span class="cover-divider" aria-hidden="true"><i></i><em>✦</em><i></i></span>
+
+      <p class="cover-eyebrow">Passport · Marketing &amp; Social Media</p>
+      <h1 class="cover-name">Alessia<br>Di Giulio</h1>
+
+      <span class="cover-divider" aria-hidden="true"><i></i><em>✦</em><i></i></span>
+
+      <p class="cover-tap-hint">Tap to open</p>
+    </button>
+
+  </div>
+</section>
+
+<!-- FLIGHT MAP -->
+<section class="flight-section" id="flight-section">
+  <p class="flight-caption">Tap the arrow below to fly to the next stop</p>
+  <div id="flight-map"></div>
+</section>
+
+<!-- CHAPTERS render here via script.js -->
+<main id="chapters-root"></main>
+
+<!-- FIXED BOTTOM FLIGHT CONTROL -->
+<div class="flight-dock" id="flight-dock" hidden>
+  <button class="advance-btn" id="advance-btn" aria-label="Fly to next stop">
+    <span class="advance-plane">✈</span>
+    <span class="advance-label" id="advance-label">Next Stop</span>
+  </button>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="data.js?v=10"></script>
+<script src="script.js?v=13"></script>
+</body>
+</html>
