@@ -242,6 +242,88 @@
   }
   .lightbox-close:hover{ background:rgba(255,255,255,0.16); }
 
+  /* Carousel badge on grid thumbnails (Instagram-style stack indicator) */
+  .carousel-badge{
+    position:absolute;
+    top:0.6rem;
+    right:0.6rem;
+    background:rgba(0,0,0,0.55);
+    color:#fff;
+    font-size:0.68rem;
+    font-weight:500;
+    padding:0.2rem 0.5rem;
+    border-radius:999px;
+    display:flex;
+    align-items:center;
+    gap:0.3rem;
+    z-index:2;
+  }
+  .carousel-badge svg{ width:11px; height:11px; }
+
+  /* Carousel viewer inside the lightbox */
+  .lightbox-content.is-carousel{
+    position:relative;
+    flex-direction:column;
+    align-items:center;
+  }
+  .carousel-track{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    width:100%;
+  }
+  .carousel-track img{
+    max-width:100%;
+    max-height:80vh;
+    width:auto;
+    height:auto;
+    display:block;
+    box-shadow:0 30px 70px -20px rgba(0,0,0,0.6);
+  }
+  .carousel-nav{
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    width:44px;
+    height:44px;
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,0.35);
+    background:rgba(0,0,0,0.4);
+    color:#fff;
+    font-size:1.2rem;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .carousel-nav:hover{ background:rgba(255,255,255,0.16); }
+  .carousel-nav--prev{ left:-1rem; }
+  .carousel-nav--next{ right:-1rem; }
+  @media (max-width:700px){
+    .carousel-nav--prev{ left:0.25rem; }
+    .carousel-nav--next{ right:0.25rem; }
+  }
+  .carousel-dots{
+    display:flex;
+    gap:0.45rem;
+    margin-top:1rem;
+  }
+  .carousel-dot{
+    width:7px; height:7px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.35);
+    border:none;
+    cursor:pointer;
+    padding:0;
+  }
+  .carousel-dot.is-active{ background:#fff; }
+  .carousel-counter{
+    color:rgba(255,255,255,0.8);
+    font-size:0.78rem;
+    margin-top:0.7rem;
+  }
+
   /* ===== ABOUT ===== */
   .about{
     display:grid;
@@ -623,31 +705,124 @@
   const lightboxContent = document.getElementById('lightbox-content');
 
   function openLightbox(item) {
+    const carouselData = item.dataset.carousel;
     const video = item.querySelector('video');
     const img = item.querySelector('img');
     lightboxContent.innerHTML = '';
-    if (video) {
+    lightboxContent.classList.remove('is-carousel');
+
+    if (carouselData) {
+      const images = carouselData.split(',').map(s => s.trim()).filter(Boolean);
+      openCarousel(images);
+    } else if (video) {
       const v = document.createElement('video');
       v.src = video.currentSrc || video.src;
       v.controls = true;
       v.autoplay = true;
       v.playsInline = true;
       lightboxContent.appendChild(v);
+      lightboxOverlay.classList.add('open');
     } else if (img) {
       const im = document.createElement('img');
       im.src = img.src;
       im.alt = img.alt || '';
       lightboxContent.appendChild(im);
+      lightboxOverlay.classList.add('open');
     } else {
       return;
     }
+  }
+
+  function openCarousel(images) {
+    let index = 0;
+    lightboxContent.classList.add('is-carousel');
+
+    const track = document.createElement('div');
+    track.className = 'carousel-track';
+
+    const prevBtn = document.createElement('button');
+    prevBtn.className = 'carousel-nav carousel-nav--prev';
+    prevBtn.setAttribute('aria-label', 'Previous image');
+    prevBtn.textContent = '‹';
+
+    const nextBtn = document.createElement('button');
+    nextBtn.className = 'carousel-nav carousel-nav--next';
+    nextBtn.setAttribute('aria-label', 'Next image');
+    nextBtn.textContent = '›';
+
+    const img = document.createElement('img');
+
+    const counter = document.createElement('div');
+    counter.className = 'carousel-counter';
+
+    const dots = document.createElement('div');
+    dots.className = 'carousel-dots';
+    images.forEach((_, i) => {
+      const dot = document.createElement('button');
+      dot.className = 'carousel-dot';
+      dot.setAttribute('aria-label', `Go to image ${i + 1}`);
+      dot.addEventListener('click', () => render(i));
+      dots.appendChild(dot);
+    });
+
+    function render(i) {
+      index = (i + images.length) % images.length;
+      img.src = images[index];
+      counter.textContent = `${index + 1} / ${images.length}`;
+      dots.querySelectorAll('.carousel-dot').forEach((d, di) => {
+        d.classList.toggle('is-active', di === index);
+      });
+    }
+
+    prevBtn.addEventListener('click', () => render(index - 1));
+    nextBtn.addEventListener('click', () => render(index + 1));
+
+    track.appendChild(prevBtn);
+    track.appendChild(img);
+    track.appendChild(nextBtn);
+    lightboxContent.appendChild(track);
+    lightboxContent.appendChild(counter);
+    lightboxContent.appendChild(dots);
+
+    // Swipe support
+    let touchStartX = null;
+    track.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; });
+    track.addEventListener('touchend', (e) => {
+      if (touchStartX === null) return;
+      const diff = e.changedTouches[0].clientX - touchStartX;
+      if (diff > 40) render(index - 1);
+      else if (diff < -40) render(index + 1);
+      touchStartX = null;
+    });
+
+    // Keyboard arrows while a carousel is open
+    lightboxContent._carouselKeyHandler = (e) => {
+      if (e.key === 'ArrowLeft') render(index - 1);
+      if (e.key === 'ArrowRight') render(index + 1);
+    };
+    document.addEventListener('keydown', lightboxContent._carouselKeyHandler);
+
+    render(0);
     lightboxOverlay.classList.add('open');
   }
 
   function closeLightbox() {
     lightboxOverlay.classList.remove('open');
     lightboxContent.innerHTML = '';
+    lightboxContent.classList.remove('is-carousel');
+    if (lightboxContent._carouselKeyHandler) {
+      document.removeEventListener('keydown', lightboxContent._carouselKeyHandler);
+      lightboxContent._carouselKeyHandler = null;
+    }
   }
+
+  document.querySelectorAll('.grid-item[data-carousel]').forEach(item => {
+    const count = item.dataset.carousel.split(',').filter(Boolean).length;
+    const badge = document.createElement('span');
+    badge.className = 'carousel-badge';
+    badge.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="14" height="14" rx="2"/><path d="M7 21h14V7"/></svg>' + count;
+    item.appendChild(badge);
+  });
 
   document.querySelectorAll('.grid-item:not(.is-empty)').forEach(item => {
     item.addEventListener('click', () => openLightbox(item));
