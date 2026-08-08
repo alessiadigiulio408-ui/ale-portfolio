@@ -96,6 +96,34 @@
     line-height:1;
     color:var(--ink);
     margin:0 0 1.5rem;
+    display:inline-block;
+    position:relative;
+    clip-path:inset(0 100% 0 0);
+    animation:signatureWrite 1.8s cubic-bezier(0.65,0,0.35,1) 0.4s forwards;
+  }
+  .hero-signature::after{
+    content:"";
+    position:absolute;
+    top:8%;
+    left:0;
+    width:6px;
+    height:80%;
+    background:var(--accent);
+    border-radius:50%;
+    opacity:0.85;
+    animation:signatureTip 1.8s cubic-bezier(0.65,0,0.35,1) 0.4s forwards;
+  }
+  @keyframes signatureWrite{
+    to{ clip-path:inset(0 0% 0 0); }
+  }
+  @keyframes signatureTip{
+    0%{ left:0; opacity:0.85; }
+    97%{ left:99%; opacity:0.85; }
+    100%{ left:100%; opacity:0; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .hero-signature{ clip-path:none; animation:none; }
+    .hero-signature::after{ display:none; }
   }
   .hero-name{
     font-family:var(--body);
